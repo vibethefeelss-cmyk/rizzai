@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+       model: 'llama3-groq-70b-8192-tool-use-preview',
         messages: [{role:'system',content:SYSTEM}, ...SHOTS, {role:'user',content:userMsg}],
         temperature: 0.88,
         max_tokens: 200
