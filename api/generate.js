@@ -16,10 +16,14 @@ const SHOTS = [
   {role:"assistant",content:"kuch aisa jo probably tumhara favorite nahi hoga 😭\nsochne wala kaam — tum batao actually\nhonestly nothing interesting, which is why i needed this message"}
 ];
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({error:'Method not allowed'});
 
-  const {msg, tone, ctx} = req.body;
+  const {msg, tone, ctx} = req.body || {};
   if (!msg) return res.status(400).json({error:'Message required'});
 
   const GROQ_KEY = process.env.GROQ_API_KEY;
@@ -51,8 +55,8 @@ export default async function handler(req, res) {
       .map(l => l.replace(/^(option\s*\d+[:\-.]?\s*|\d+[.\-:]\s*)/i, '').trim())
       .filter(l => l.length > 0).slice(0, 3);
 
-    res.status(200).json({replies});
+    return res.status(200).json({replies});
   } catch(e) {
-    res.status(500).json({error: e.message || 'Server error', detail: e.toString()});
+    return res.status(500).json({error: e.message || 'Server error'});
   }
-}
+};
