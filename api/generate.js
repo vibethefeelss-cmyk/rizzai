@@ -53,6 +53,6 @@ export default async function handler(req, res) {
 
     res.status(200).json({replies});
   } catch(e) {
-    res.status(500).json({error: e.message || 'Server error'});
+    res.status(500).json({error: e.message || 'Server error', detail: e.toString()});
   }
 }
