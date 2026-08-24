@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a14">
-<meta name="description" content="RizzAI — natural replies for real conversations">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<meta
+  name="theme-color"
+  content="#090910"
+/>
+
+<meta
+  name="description"
+  content="RizzAI — natural replies for real conversations"
+/>
+
 <title>RizzAI</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+/>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+/>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
 
 <style>
+
 *{
   margin:0;
   padding:0;
@@ -28,19 +54,36 @@
   --muted:#85859d;
   --dim:#505067;
   --purple:#7c3aed;
-  --purple-light:#9d5cff;
+  --purple2:#6d28d9;
   --danger:#ef4444;
   --success:#10b981;
 }
 
+html{
+  min-height:100%;
+}
+
 body{
-  font-family:'Inter',sans-serif;
-  background:
-    radial-gradient(circle at 50% -10%,rgba(124,58,237,.13),transparent 35%),
-    var(--bg);
-  color:var(--text);
+  margin:0;
   min-height:100vh;
-  padding:24px 16px 70px;
+
+  font-family:'Inter',sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(124,58,237,.14),
+      transparent 35%
+    ),
+    var(--bg);
+
+  color:var(--text);
+
+  padding:
+    22px
+    16px
+    70px;
+
   -webkit-font-smoothing:antialiased;
 }
 
@@ -64,7 +107,10 @@ button{
 
 .header{
   text-align:center;
-  padding:12px 0 25px;
+  padding:
+    12px
+    0
+    24px;
 }
 
 .logo-row{
@@ -78,12 +124,24 @@ button{
 .logo-icon{
   width:36px;
   height:36px;
-  border-radius:11px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#7c3aed,#ec4899);
-  box-shadow:0 8px 30px rgba(124,58,237,.22);
+
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+
+  box-shadow:
+    0 8px 30px
+    rgba(124,58,237,.23);
+
   font-size:17px;
 }
 
@@ -91,7 +149,14 @@ button{
   font-size:22px;
   font-weight:700;
   letter-spacing:-.03em;
-  background:linear-gradient(90deg,#fff,#b78aff);
+
+  background:
+    linear-gradient(
+      90deg,
+      #fff,
+      #b78aff
+    );
+
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
@@ -99,49 +164,85 @@ button{
 .tagline{
   color:var(--muted);
   font-size:12px;
-  letter-spacing:.01em;
 }
 
-/* MAIN CARD */
+/* CARD */
 
 .card{
-  background:rgba(17,17,27,.94);
-  border:1px solid var(--border);
+  background:
+    rgba(17,17,27,.95);
+
+  border:
+    1px solid
+    var(--border);
+
   border-radius:18px;
+
   padding:18px;
+
   margin-bottom:14px;
-  box-shadow:0 15px 50px rgba(0,0,0,.18);
+
+  box-shadow:
+    0 15px 50px
+    rgba(0,0,0,.18);
 }
 
 .lbl{
   display:block;
+
   margin-bottom:9px;
+
   color:#66667d;
+
   font-size:10px;
   font-weight:700;
+
   letter-spacing:.09em;
   text-transform:uppercase;
 }
 
 textarea{
   display:block;
+
   width:100%;
-  min-height:118px;
+
+  min-height:120px;
+
   resize:vertical;
-  background:var(--input);
-  border:1px solid var(--border);
+
+  background:
+    var(--input);
+
+  border:
+    1px solid
+    var(--border);
+
   border-radius:12px;
+
   outline:none;
+
   color:var(--text);
-  padding:13px 14px;
+
+  padding:
+    13px
+    14px;
+
   font-size:14px;
+
   line-height:1.6;
-  transition:.2s ease;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
 textarea:focus{
-  border-color:rgba(124,58,237,.8);
-  box-shadow:0 0 0 3px rgba(124,58,237,.08);
+  border-color:
+    rgba(124,58,237,.8);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(124,58,237,.08);
 }
 
 textarea::placeholder{
@@ -152,48 +253,88 @@ textarea::placeholder{
 
 .controls{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:10px;
-}
 
-.control{
-  min-width:0;
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:9px;
+
+  margin-top:10px;
 }
 
 select{
   width:100%;
-  background:var(--input);
-  border:1px solid var(--border);
+
+  background:
+    var(--input);
+
+  border:
+    1px solid
+    var(--border);
+
   color:var(--text);
-  padding:10px 11px;
+
+  padding:
+    10px
+    11px;
+
   border-radius:10px;
+
   outline:none;
+
   font-size:12px;
+
   cursor:pointer;
 }
 
 select:focus{
-  border-color:var(--purple);
+  border-color:
+    var(--purple);
 }
+
+/* GENERATE */
 
 .generate{
   width:100%;
+
   min-height:46px;
+
   margin-top:11px;
+
   border:0;
+
   border-radius:12px;
-  background:linear-gradient(135deg,#7c3aed,#6d28d9);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--purple2)
+    );
+
   color:#fff;
+
   font-size:14px;
   font-weight:600;
+
   cursor:pointer;
+
   display:flex;
+
   align-items:center;
   justify-content:center;
+
   gap:8px;
-  box-shadow:0 8px 25px rgba(124,58,237,.18);
-  transition:transform .15s ease,filter .15s ease,opacity .15s ease;
+
+  box-shadow:
+    0 8px 25px
+    rgba(124,58,237,.18);
+
+  transition:
+    transform .15s ease,
+    filter .15s ease,
+    opacity .15s ease;
 }
 
 .generate:hover{
@@ -215,10 +356,15 @@ select:focus{
 
 .status{
   min-height:18px;
+
   margin-top:8px;
+
   text-align:center;
+
   color:var(--danger);
+
   font-size:12px;
+
   line-height:1.4;
 }
 
@@ -226,79 +372,137 @@ select:focus{
 
 .results-header{
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
-  margin:4px 2px 9px;
+  justify-content:space-between;
+
+  margin:
+    5px
+    2px
+    9px;
 }
 
 .results-title{
   color:#73738c;
+
   font-size:10px;
+
   font-weight:700;
+
   letter-spacing:.09em;
+
   text-transform:uppercase;
 }
 
 .results-hint{
   color:#4e4e64;
+
   font-size:10px;
 }
 
 .reply{
-  position:relative;
-  background:rgba(17,17,27,.94);
-  border:1px solid var(--border);
+  background:
+    rgba(17,17,27,.95);
+
+  border:
+    1px solid
+    var(--border);
+
   border-radius:13px;
-  padding:14px 15px;
+
+  padding:
+    14px
+    15px;
+
   margin-bottom:9px;
-  transition:border-color .18s ease,transform .18s ease,background .18s ease;
+
+  transition:
+    border-color .18s ease,
+    transform .18s ease,
+    background .18s ease;
+
+  cursor:pointer;
 }
 
 .reply:hover{
-  border-color:var(--border-hover);
-  transform:translateY(-1px);
+  border-color:
+    var(--border-hover);
+
+  transform:
+    translateY(-1px);
 }
 
 .reply.best{
-  border-color:rgba(124,58,237,.48);
+  border-color:
+    rgba(124,58,237,.48);
+
   background:
-    linear-gradient(120deg,rgba(124,58,237,.08),rgba(17,17,27,.96));
+    linear-gradient(
+      120deg,
+      rgba(124,58,237,.08),
+      rgba(17,17,27,.96)
+    );
 }
 
 .reply-top{
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   margin-bottom:9px;
 }
 
 .badge{
   display:inline-flex;
+
   align-items:center;
+
   border-radius:20px;
-  padding:3px 8px;
+
+  padding:
+    3px
+    8px;
+
   font-size:9px;
+
   font-weight:700;
+
   letter-spacing:.06em;
+
   text-transform:uppercase;
 }
 
 .badge.best{
   color:#b58cff;
-  background:rgba(124,58,237,.16);
+
+  background:
+    rgba(124,58,237,.16);
 }
 
 .badge.alt{
   color:#74748c;
-  background:rgba(255,255,255,.045);
+
+  background:
+    rgba(255,255,255,.045);
 }
 
 .copy{
   border:0;
+
   background:transparent;
+
   color:#77778e;
+
   cursor:pointer;
-  padding:3px 0 3px 10px;
+
+  padding:
+    3px
+    0
+    3px
+    10px;
+
   font-size:11px;
 }
 
@@ -308,54 +512,86 @@ select:focus{
 
 .reply-text{
   color:#f0eef9;
+
   font-size:15px;
+
   line-height:1.55;
+
   font-weight:500;
+
   word-break:break-word;
 }
 
 /* EMPTY */
 
 .empty{
-  border:1px dashed #242438;
+  border:
+    1px dashed
+    #242438;
+
   border-radius:14px;
-  padding:38px 18px;
+
+  padding:
+    38px
+    18px;
+
   text-align:center;
+
   color:#4b4b62;
+
   font-size:12px;
+
   line-height:1.8;
 }
 
 .empty-icon{
   font-size:22px;
+
   opacity:.65;
+
   margin-bottom:7px;
 }
 
 /* LOADING */
 
 .loading{
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
+
   border-radius:13px;
-  padding:20px;
+
+  padding:22px;
+
   text-align:center;
+
   color:#66667d;
+
   font-size:12px;
 }
 
 .dots{
   display:inline-flex;
+
   gap:5px;
+
   align-items:center;
+
   margin-bottom:7px;
 }
 
 .dot{
   width:6px;
   height:6px;
+
   border-radius:50%;
+
   background:#fff;
-  animation:dotPulse 1.05s ease-in-out infinite;
+
+  animation:
+    pulse 1.05s
+    ease-in-out
+    infinite;
 }
 
 .dot:nth-child(2){
@@ -366,11 +602,13 @@ select:focus{
   animation-delay:.3s;
 }
 
-@keyframes dotPulse{
+@keyframes pulse{
+
   0%,100%{
     opacity:.2;
     transform:scale(.7);
   }
+
   50%{
     opacity:1;
     transform:scale(1);
@@ -380,8 +618,12 @@ select:focus{
 /* MOBILE */
 
 @media(max-width:430px){
+
   body{
-    padding:17px 12px 50px;
+    padding:
+      17px
+      12px
+      50px;
   }
 
   .card{
@@ -400,7 +642,9 @@ select:focus{
     font-size:14px;
   }
 }
+
 </style>
+
 </head>
 
 <body>
@@ -408,23 +652,37 @@ select:focus{
 <div class="wrap">
 
   <header class="header">
+
     <div class="logo-row">
-      <div class="logo-icon">💬</div>
-      <div class="logo-text">RizzAI</div>
+
+      <div class="logo-icon">
+        💬
+      </div>
+
+      <div class="logo-text">
+        RizzAI
+      </div>
+
     </div>
 
     <div class="tagline">
       paste the message. understand the vibe. get the reply.
     </div>
+
   </header>
+
 
   <main>
 
     <section class="card">
 
-      <label class="lbl" for="msgInput">
+      <label
+        class="lbl"
+        for="msgInput"
+      >
         Their message / situation
       </label>
+
 
       <textarea
         id="msgInput"
@@ -438,52 +696,139 @@ e.g. unknown girl sent 'hey'
 e.g. she's taking forever to reply, kya bolu?"
       ></textarea>
 
+
       <div class="controls">
 
-        <div class="control">
-          <label class="lbl" for="tone">Tone</label>
+        <div>
+
+          <label
+            class="lbl"
+            for="tone"
+          >
+            Tone
+          </label>
+
           <select id="tone">
-            <option value="chill">chill</option>
-            <option value="flirty">subtle flirty</option>
-            <option value="funny">funny</option>
-            <option value="cute">cute</option>
-            <option value="savage">teasing / savage</option>
-            <option value="direct">smooth / direct</option>
+
+            <option value="chill">
+              chill
+            </option>
+
+            <option value="flirty">
+              subtle flirty
+            </option>
+
+            <option value="funny">
+              funny
+            </option>
+
+            <option value="cute">
+              cute
+            </option>
+
+            <option value="savage">
+              teasing / savage
+            </option>
+
+            <option value="direct">
+              smooth / direct
+            </option>
+
           </select>
+
         </div>
 
-        <div class="control">
-          <label class="lbl" for="ctx">Context</label>
+
+        <div>
+
+          <label
+            class="lbl"
+            for="ctx"
+          >
+            Context
+          </label>
+
           <select id="ctx">
-            <option value="unknown">unknown person</option>
-            <option value="crush">crush</option>
-            <option value="friend">friend</option>
-            <option value="early">just started talking</option>
-            <option value="ongoing">been talking a while</option>
-            <option value="gap">restarting after a gap</option>
-            <option value="dry">conversation is dry</option>
-            <option value="hinge">hinge / dating app</option>
+
+            <option value="unknown">
+              unknown person
+            </option>
+
+            <option value="crush">
+              crush
+            </option>
+
+            <option value="friend">
+              friend
+            </option>
+
+            <option value="early">
+              just started talking
+            </option>
+
+            <option value="ongoing">
+              been talking a while
+            </option>
+
+            <option value="gap">
+              restarting after a gap
+            </option>
+
+            <option value="dry">
+              conversation is dry
+            </option>
+
+            <option value="hinge">
+              hinge / dating app
+            </option>
+
           </select>
+
         </div>
 
       </div>
 
-      <button class="generate" id="genBtn" type="button">
-        <span>⚡</span>
-        <span id="btnText">Generate</span>
+
+      <button
+        class="generate"
+        id="genBtn"
+        type="button"
+      >
+
+        <span>
+          ⚡
+        </span>
+
+        <span id="btnText">
+          Generate
+        </span>
+
       </button>
 
-      <div class="status" id="status" aria-live="polite"></div>
+
+      <div
+        class="status"
+        id="status"
+        aria-live="polite"
+      ></div>
 
     </section>
+
 
     <section id="results">
 
       <div class="empty">
-        <div class="empty-icon">💬</div>
+
+        <div class="empty-icon">
+          💬
+        </div>
+
         paste their message above<br>
+
         hit generate — 3 replies will show here<br>
+
         click any reply to copy
+
       </div>
 
     </section>
@@ -492,21 +837,26 @@ e.g. she's taking forever to reply, kya bolu?"
 
 </div>
 
+
 <script>
+
 "use strict";
 
-/*
-  RizzAI FRONTEND
 
-  IMPORTANT:
-  - No Groq API key lives in this file.
-  - The browser talks only to your Vercel backend.
-  - Your backend (/api/generate) is responsible for Groq.
-*/
+/* =========================================================
+   CONFIG
+========================================================= */
 
-const API_ENDPOINT = "/api/generate";
+const API_ENDPOINT =
+  "/api/generate";
+
+
+/* =========================================================
+   UI DATA
+========================================================= */
 
 const TONES = {
+
   chill:
     "chill, effortless, low-pressure, natural",
 
@@ -524,9 +874,12 @@ const TONES = {
 
   direct:
     "smooth, direct, confident, conversational, no pickup-line energy"
+
 };
 
+
 const CONTEXTS = {
+
   unknown:
     "complete stranger / first contact; do not assume chemistry",
 
@@ -550,455 +903,966 @@ const CONTEXTS = {
 
   hinge:
     "Hinge or dating app conversation; use profile/message specifics naturally"
+
 };
 
-const $ = id => document.getElementById(id);
 
-const msgInput = $("msgInput");
-const toneInput = $("tone");
-const ctxInput = $("ctx");
-const genBtn = $("genBtn");
-const btnText = $("btnText");
-const statusBox = $("status");
-const results = $("results");
+/* =========================================================
+   DOM
+========================================================= */
+
+const msgInput =
+  document.getElementById("msgInput");
+
+const toneInput =
+  document.getElementById("tone");
+
+const ctxInput =
+  document.getElementById("ctx");
+
+const genBtn =
+  document.getElementById("genBtn");
+
+const btnText =
+  document.getElementById("btnText");
+
+const statusBox =
+  document.getElementById("status");
+
+const results =
+  document.getElementById("results");
+
+
+/* =========================================================
+   SESSION MEMORY
+
+   This is intentionally local to the browser.
+
+   It lets:
+
+   first generation:
+      "she said she's busy"
+
+   followed by:
+      "or do"
+
+   reuse the SAME context while rejecting
+   previous replies.
+========================================================= */
+
+let session = {
+
+  lastInput: "",
+
+  lastTone: "chill",
+
+  lastContext: "unknown",
+
+  lastReplies: [],
+
+  generationCount: 0
+
+};
+
 
 let generating = false;
 
 
-/* ---------------------------
-   BASIC UI HELPERS
----------------------------- */
+/* =========================================================
+   "OR DO" DETECTION
+========================================================= */
+
+function isMoreRequest(text) {
+
+  const normalized =
+    String(text || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[.!?]+$/g, "");
+
+  const patterns = [
+
+    "or do",
+    "aur do",
+    "more",
+    "more please",
+    "another",
+    "another one",
+    "aur",
+    "aur batao",
+    "aur accha",
+    "aur accha do",
+    "better",
+    "better one",
+    "do aur",
+    "ek aur",
+    "ek aur do",
+    "more options",
+    "different",
+    "different ones"
+
+  ];
+
+  return patterns.includes(normalized);
+}
+
+
+function isBetterRequest(text) {
+
+  const normalized =
+    String(text || "")
+      .trim()
+      .toLowerCase();
+
+  return (
+
+    normalized.includes("accha nahi laga") ||
+
+    normalized.includes("acha nahi laga") ||
+
+    normalized.includes("pasand nahi") ||
+
+    normalized.includes("better reply") ||
+
+    normalized.includes("aur better") ||
+
+    normalized.includes("yeh nahi") ||
+
+    normalized.includes("not good")
+
+  );
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 function setStatus(message = "") {
-  statusBox.textContent = message;
+
+  statusBox.textContent =
+    message;
+
 }
+
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 function setLoading(isLoading) {
-  generating = isLoading;
-  genBtn.disabled = isLoading;
+
+  generating =
+    isLoading;
+
+  genBtn.disabled =
+    isLoading;
+
 
   if (isLoading) {
+
     btnText.innerHTML = `
       <span class="dots">
+
         <span class="dot"></span>
         <span class="dot"></span>
+        <span class="dot"></span>
+
       </span>
+
       thinking
     `;
+
   } else {
-    btnText.textContent = "Generate";
+
+    btnText.textContent =
+      "Generate";
+
   }
+
 }
+
+
+/* =========================================================
+   LOADING SCREEN
+========================================================= */
 
 function showLoading() {
+
   results.innerHTML = `
+
     <div class="loading">
+
       <div class="dots">
+
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
+
       </div>
-      <div>reading the vibe...</div>
+
+      <div>
+        reading the vibe...
+      </div>
+
     </div>
+
   `;
+
 }
 
 
-/* ---------------------------
-   SAFE HTML
----------------------------- */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHTML(value) {
+
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+
 }
 
 
-/* ---------------------------
-   REPLY NORMALIZATION
-
-   Backend already cleans output,
-   but frontend also protects itself
-   against accidental formatting.
----------------------------- */
+/* =========================================================
+   NORMALIZE
+========================================================= */
 
 function normalizeReply(value) {
-  let text = String(value ?? "").trim();
 
-  text = text
+  return String(value ?? "")
+    .replace(/\r?\n/g, " ")
+    .replace(/\s+/g, " ")
     .replace(/^["'`]+|["'`]+$/g, "")
     .replace(
       /^(?:option|reply|response)\s*\d+\s*[:.)-]\s*/i,
       ""
     )
-    .replace(/^\d+\s*[:.)-]\s*/, "")
-    .replace(/^[-•*]\s*/, "")
+    .replace(
+      /^\d+\s*[:.)-]\s*/,
+      ""
+    )
+    .replace(
+      /^[-•*]\s*/,
+      ""
+    )
     .trim();
 
-  return text;
 }
 
-function normalizeReplies(replies) {
-  if (!Array.isArray(replies)) return [];
 
-  const unique = [];
+function normalizeReplies(replies) {
+
+  if (!Array.isArray(replies)) {
+    return [];
+  }
+
+  const output = [];
 
   for (const item of replies) {
-    const text = normalizeReply(item);
+
+    const text =
+      normalizeReply(item);
 
     if (!text) continue;
 
-    const duplicate = unique.some(
-      existing =>
-        existing.toLowerCase() === text.toLowerCase()
-    );
+    const exists =
+      output.some(
+        existing =>
+          existing.toLowerCase() ===
+          text.toLowerCase()
+      );
 
-    if (!duplicate) {
-      unique.push(text);
+    if (!exists) {
+      output.push(text);
     }
+
   }
 
-  return unique.slice(0, 3);
+  return output.slice(0,3);
+
 }
 
 
-/* ---------------------------
+/* =========================================================
    RENDER
----------------------------- */
+========================================================= */
 
 function renderReplies(replies) {
-  const safeReplies = normalizeReplies(replies);
 
-  if (safeReplies.length < 3) {
+  const clean =
+    normalizeReplies(replies);
+
+
+  if (clean.length !== 3) {
+
     results.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🫠</div>
+
+        <div class="empty-icon">
+          🫠
+        </div>
+
         couldn't get three usable replies<br>
-        try generating again
+        try again
+
       </div>
+
     `;
+
     return;
+
   }
 
+
   const labels = [
-    ["✦ Best", "best"],
-    ["Alt 1", "alt"],
-    ["Alt 2", "alt"]
+
+    ["✦ Best","best"],
+
+    ["Alt 1","alt"],
+
+    ["Alt 2","alt"]
+
   ];
 
+
   results.innerHTML = `
+
     <div class="results-header">
-      <span class="results-title">your replies</span>
-      <span class="results-hint">tap to copy</span>
+
+      <span class="results-title">
+        your replies
+      </span>
+
+      <span class="results-hint">
+        tap to copy
+      </span>
+
     </div>
 
-    ${safeReplies.map((text, index) => `
-      <article class="reply ${index === 0 ? "best" : ""}" data-index="${index}">
+
+    ${clean.map((text,index)=>`
+
+      <article
+        class="reply ${index === 0 ? "best" : ""}"
+      >
 
         <div class="reply-top">
-          <span class="badge ${labels[index][1]}">
+
+          <span
+            class="badge ${labels[index][1]}"
+          >
             ${labels[index][0]}
           </span>
+
 
           <button
             class="copy"
             type="button"
-            data-copy="${escapeHTML(text)}"
           >
             Copy
           </button>
+
         </div>
+
 
         <div class="reply-text">
           ${escapeHTML(text)}
         </div>
 
       </article>
+
     `).join("")}
+
   `;
 
-  /*
-    Event listeners are attached after rendering.
-    This avoids inline onclick handlers and quote-breaking
-    when a generated reply contains apostrophes.
-  */
 
-  document.querySelectorAll(".reply").forEach(card => {
-    card.addEventListener("click", async event => {
+  const cards =
+    document.querySelectorAll(".reply");
 
-      if (event.target.closest(".copy")) return;
 
-      await copyReply(
-        card.querySelector(".reply-text").textContent,
-        card
+  cards.forEach(card => {
+
+    card.addEventListener(
+      "click",
+      async event => {
+
+        if (
+          event.target.closest(".copy")
+        ) {
+          return;
+        }
+
+        const text =
+          card.querySelector(
+            ".reply-text"
+          ).textContent;
+
+        await copyReply(
+          text,
+          card
+        );
+
+      }
+    );
+
+  });
+
+
+  document
+    .querySelectorAll(".copy")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        async event => {
+
+          event.stopPropagation();
+
+          const card =
+            button.closest(".reply");
+
+          const text =
+            card.querySelector(
+              ".reply-text"
+            ).textContent;
+
+          await copyReply(
+            text,
+            card
+          );
+
+        }
       );
+
     });
-  });
 
-  document.querySelectorAll(".copy").forEach(button => {
-    button.addEventListener("click", async event => {
-      event.stopPropagation();
-
-      const card = button.closest(".reply");
-      const text = card.querySelector(".reply-text").textContent;
-
-      await copyReply(text, card);
-    });
-  });
 }
 
 
-/* ---------------------------
+/* =========================================================
    COPY
----------------------------- */
+========================================================= */
 
-async function copyReply(text, card) {
+async function copyReply(
+  text,
+  card
+) {
+
   try {
 
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      const area = document.createElement("textarea");
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
 
-      area.value = text;
-      area.style.position = "fixed";
-      area.style.opacity = "0";
+      await navigator.clipboard
+        .writeText(text);
+
+    } else {
+
+      const area =
+        document.createElement("textarea");
+
+      area.value =
+        text;
+
+      area.style.position =
+        "fixed";
+
+      area.style.opacity =
+        "0";
 
       document.body.appendChild(area);
+
       area.focus();
       area.select();
 
       document.execCommand("copy");
+
       area.remove();
+
     }
 
-    const copyButton = card.querySelector(".copy");
 
-    if (copyButton) {
-      const original = copyButton.textContent;
+    const button =
+      card.querySelector(".copy");
 
-      copyButton.textContent = "✓ Copied";
+
+    if (button) {
+
+      button.textContent =
+        "✓ Copied";
 
       setTimeout(() => {
-        copyButton.textContent = original;
-      }, 1400);
+
+        button.textContent =
+          "Copy";
+
+      },1400);
+
     }
 
-    card.style.borderColor = "rgba(16,185,129,.65)";
+
+    card.style.borderColor =
+      "rgba(16,185,129,.65)";
+
 
     setTimeout(() => {
-      card.style.borderColor = "";
-    }, 1400);
 
-  } catch (error) {
-    console.error("Copy failed:", error);
+      card.style.borderColor =
+        "";
+
+    },1400);
+
+
+  } catch(error) {
+
+    console.error(
+      "Copy failed:",
+      error
+    );
+
   }
+
 }
 
 
-/* ---------------------------
-   RESPONSE ERROR HANDLING
+/* =========================================================
+   SERVER RESPONSE
+========================================================= */
 
-   Converts backend errors into
-   useful user-facing messages.
----------------------------- */
+async function readResponse(
+  response
+) {
 
-async function readServerResponse(response) {
+  const type =
+    response.headers.get(
+      "content-type"
+    ) || "";
 
-  const contentType =
-    response.headers.get("content-type") || "";
 
-  if (contentType.includes("application/json")) {
+  if (
+    type.includes(
+      "application/json"
+    )
+  ) {
 
     try {
+
       return await response.json();
+
     } catch {
+
       return {};
+
     }
+
   }
 
-  const text = await response.text();
+
+  const text =
+    await response.text();
+
 
   return {
-    error: text || "Server returned an invalid response."
+    error:
+      text ||
+      "Invalid server response"
   };
+
 }
 
 
-/* ---------------------------
+/* =========================================================
    GENERATE
----------------------------- */
+========================================================= */
 
 async function generate() {
 
-  if (generating) return;
+  if (generating) {
+    return;
+  }
 
-  const msg = msgInput.value.trim();
 
-  if (!msg) {
-    setStatus("paste their message first");
+  const typedInput =
+    msgInput.value.trim();
+
+
+  if (!typedInput) {
+
+    setStatus(
+      "paste their message first"
+    );
+
     msgInput.focus();
+
     return;
+
   }
 
-  if (msg.length > 12000) {
-    setStatus("that's a lot 😭 keep the chat under 12,000 characters");
-    return;
+
+  /*
+    Detect continuation commands.
+
+    "or do"
+    "aur do"
+    "better"
+    etc.
+
+    They reuse the previous conversation.
+  */
+
+  const moreRequest =
+    isMoreRequest(
+      typedInput
+    );
+
+  const betterRequest =
+    isBetterRequest(
+      typedInput
+    );
+
+
+  let actualMessage =
+    typedInput;
+
+
+  let generationMode =
+    "new";
+
+
+  if (
+    (moreRequest || betterRequest) &&
+    session.lastInput
+  ) {
+
+    actualMessage =
+      session.lastInput;
+
+    generationMode =
+      moreRequest
+        ? "more"
+        : "better";
+
   }
+
+
+  /*
+    If user simply types "or do" before
+    any generation, treat it normally instead
+    of sending an empty context.
+  */
+
+  if (
+    (moreRequest || betterRequest) &&
+    !session.lastInput
+  ) {
+
+    actualMessage =
+      typedInput;
+
+    generationMode =
+      "new";
+
+  }
+
+
+  if (
+    actualMessage.length >
+    12000
+  ) {
+
+    setStatus(
+      "that's a lot 😭 keep it under 12,000 characters"
+    );
+
+    return;
+
+  }
+
 
   setStatus("");
+
   setLoading(true);
+
   showLoading();
 
-  const toneKey = toneInput.value;
-  const ctxKey = ctxInput.value;
+
+  const toneKey =
+    moreRequest || betterRequest
+      ? session.lastTone
+      : toneInput.value;
+
+
+  const ctxKey =
+    moreRequest || betterRequest
+      ? session.lastContext
+      : ctxInput.value;
+
 
   const payload = {
-    msg,
-    tone: TONES[toneKey] || TONES.chill,
-    ctx: CONTEXTS[ctxKey] || CONTEXTS.unknown
+
+    msg:
+      actualMessage,
+
+    tone:
+      TONES[toneKey] ||
+      TONES.chill,
+
+    ctx:
+      CONTEXTS[ctxKey] ||
+      CONTEXTS.unknown,
+
+    generationMode,
+
+    previousReplies:
+      session.lastReplies.slice(0,3)
+
   };
+
 
   try {
 
-    const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+    const response =
+      await fetch(
+        API_ENDPOINT,
+        {
+          method:"POST",
 
-    const data = await readServerResponse(response);
+          headers:{
+            "Content-Type":
+              "application/json",
+
+            "Accept":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    const data =
+      await readResponse(
+        response
+      );
+
 
     if (!response.ok) {
 
-      console.error("RizzAI backend error:", {
-        status: response.status,
-        data
-      });
+      console.error(
+        "RizzAI backend error:",
+        {
+          status:
+            response.status,
 
-      /*
-        Keep provider/server details out of the UI.
-        Those details remain in Vercel logs.
-      */
+          data
+        }
+      );
 
-      if (response.status === 429) {
+
+      if (
+        response.status === 429
+      ) {
+
         throw new Error(
-          "AI is busy right now — give it a second and retry."
+          "AI is busy right now — try again in a moment."
         );
+
       }
 
-      if (response.status >= 500) {
+
+      if (
+        response.status >= 500
+      ) {
+
         throw new Error(
-          "RizzAI couldn't generate a reply right now. Try again."
+          "RizzAI couldn't generate right now. Try again."
         );
+
       }
+
 
       throw new Error(
-        data?.error || "Something went wrong. Try again."
+        data?.error ||
+        "Something went wrong. Try again."
       );
+
     }
 
-    const replies = normalizeReplies(data?.replies);
 
-    if (replies.length !== 3) {
-      console.error("Invalid RizzAI response:", data);
+    const replies =
+      normalizeReplies(
+        data?.replies
+      );
+
+
+    if (
+      replies.length !== 3
+    ) {
+
+      console.error(
+        "Invalid RizzAI response:",
+        data
+      );
 
       throw new Error(
         "RizzAI returned an incomplete response. Try again."
       );
+
     }
 
-    renderReplies(replies);
 
-  } catch (error) {
+    /*
+      Save the context for:
 
-    console.error("Generate error:", error);
+      "or do"
+      "aur do"
+      "better"
+      etc.
+    */
+
+    session.lastInput =
+      actualMessage;
+
+    session.lastTone =
+      toneKey;
+
+    session.lastContext =
+      ctxKey;
+
+    session.lastReplies =
+      replies;
+
+    session.generationCount++;
+
+
+    renderReplies(
+      replies
+    );
+
+
+    /*
+      If the user clicked Generate again
+      with the same input, the next request
+      naturally knows the previous replies.
+    */
+
+    if (
+      moreRequest ||
+      betterRequest
+    ) {
+
+      msgInput.value =
+        typedInput;
+
+    }
+
+
+  } catch(error) {
+
+    console.error(
+      "Generate error:",
+      error
+    );
+
 
     results.innerHTML = `
+
       <div class="empty">
-        <div class="empty-icon">🫠</div>
+
+        <div class="empty-icon">
+          🫠
+        </div>
+
         couldn't generate right now<br>
-        check your connection and try again
+        try again in a moment
+
       </div>
+
     `;
+
 
     setStatus(
       error?.message ||
-      "RizzAI couldn't generate a reply right now."
+      "RizzAI couldn't generate right now."
     );
+
 
   } finally {
 
     setLoading(false);
+
   }
+
 }
 
 
-/* ---------------------------
-   EVENTS
----------------------------- */
+/* =========================================================
+   BUTTON
+========================================================= */
 
-genBtn.addEventListener("click", generate);
+genBtn.addEventListener(
+  "click",
+  generate
+);
 
-msgInput.addEventListener("keydown", event => {
 
-  /*
-    Ctrl + Enter / Cmd + Enter = generate
-    Normal Enter remains normal textarea behavior.
-  */
+/* =========================================================
+   CTRL/CMD + ENTER
+========================================================= */
 
-  if (
-    event.key === "Enter" &&
-    (event.ctrlKey || event.metaKey)
-  ) {
-    event.preventDefault();
-    generate();
+msgInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey ||
+       event.metaKey)
+    ) {
+
+      event.preventDefault();
+
+      generate();
+
+    }
+
   }
-});
+);
 
 
-/*
-  Clear stale error when the user starts typing.
-*/
+/* =========================================================
+   CLEAR ERROR WHILE TYPING
+========================================================= */
 
-msgInput.addEventListener("input", () => {
-  if (statusBox.textContent) {
-    setStatus("");
+msgInput.addEventListener(
+  "input",
+  () => {
+
+    if (
+      statusBox.textContent
+    ) {
+
+      setStatus("");
+
+    }
+
   }
-});
+);
 
 
-/*
-  Prevent accidental double submission while
-  browser is waiting for the backend.
-*/
+console.log(
+  "RizzAI ready."
+);
 
-window.addEventListener("beforeunload", event => {
-  if (!generating) return;
-
-  /*
-    We intentionally do not block navigation.
-    This simply exists as a safe state hook.
-  */
-});
-
-
-/* ---------------------------
-   OPTIONAL HEALTH CHECK
-
-   No API request is made here.
-   The backend is contacted only when
-   the user actually presses Generate.
----------------------------- */
-
-console.log("RizzAI frontend ready.");
 </script>
 
 </body>
