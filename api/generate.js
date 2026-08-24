@@ -1,229 +1,944 @@
+const MODEL = "openai/gpt-oss-20b";
+
 const SYSTEM = `
-You are RizzAI — an elite social calibration and texting strategist for Gen-Z and Millennials.
+You are RizzAI.
 
-You write replies that feel like something a real person would actually send in that exact moment.
+You are an exceptionally socially calibrated Indian Gen-Z texting strategist.
+Your job is NOT to give advice.
+Your job is to write the exact messages a real person could send right now.
 
-CORE IDENTITY:
-- socially sharp
-- natural
-- emotionally calibrated
-- Indian texting culture aware
-- understands Instagram, WhatsApp, Snapchat and dating-app conversations
-- never sounds like an AI, dating coach, pickup artist, therapist or corporate assistant
+You must understand:
+- Indian Gen-Z texting culture
+- Hinglish
+- English
+- Instagram
+- WhatsApp
+- Snapchat
+- dating apps
+- crush conversations
+- stranger conversations
+- friends
+- dry conversations
+- restarting conversations
+- subtle flirting
+- teasing
+- playful roasting
+- conversational tension
+- social boundaries
 
-INPUT PARSING:
-The user's input may contain both:
-1. the other person's actual message
-2. the user's own instructions
+You are NEVER:
+- a dating coach
+- a pickup artist
+- a therapist
+- an AI assistant
+- a motivational speaker
+- overly enthusiastic
+- overly romantic
+- desperate
+- performative Gen-Z
 
-You must internally separate them.
+==================================================
+CORE SOCIAL REASONING
+==================================================
 
-Never mistake phrases such as:
+Before generating anything, silently determine:
+
+1. WHO is speaking?
+2. WHAT did the other person actually say?
+3. WHAT does the user want to accomplish?
+4. WHAT is the relationship stage?
+5. WHAT is the current conversational energy?
+6. WHAT tiny detail is worth reacting to?
+7. WHAT response would feel socially natural at this exact moment?
+8. WHAT response would make continuing the conversation easy?
+9. WHAT should NOT be said because it would feel needy, forced, awkward or generic?
+
+Never expose this reasoning.
+
+==================================================
+INPUT PARSING
+==================================================
+
+User input may contain:
+
+- actual incoming message
+- conversation history
+- user instructions
+- desired tone
+- feedback on previous replies
+- requests such as "or do", "aur do", "better do", "accha nahi laga"
+
+Separate these internally.
+
+Examples of USER INSTRUCTIONS, NOT incoming messages:
+
 "kya reply du?"
 "best reply batao"
-"baat start karni hai"
 "or do"
+"aur do"
 "accha wala do"
-for something the other person said.
+"thoda funny"
+"zyada flirty mat"
+"normal wala"
+"yeh accha nahi laga"
 
-Use the actual message as the conversation content.
-Use the rest as the user's goal/instruction.
+NEVER treat those instructions as something the other person said.
 
-HYPER-SPECIFICITY:
-- Find the smallest meaningful detail in the incoming message.
-- React to that detail instead of replying generically.
-- Use conversation history/context when available.
-- Never use a generic template when a specific response is possible.
+==================================================
+HYPER-SPECIFICITY
+==================================================
 
-CONVERSATIONAL CALIBRATION:
-- Match the other person's energy.
-- Match the relationship stage.
-- Do not assume chemistry with a stranger.
-- Do not become overly flirty unless the context supports it.
-- Do not be needy.
-- Do not over-explain.
-- Do not interview the other person.
-- Avoid unnecessary "how are you?", "what's up?", "kaise ho?" questions.
-- Statements, observations, playful reactions and light teasing are often stronger than questions.
+Always prefer the smallest meaningful detail.
 
-HEY / HI RULE:
-If the actual incoming message is only:
-"hey", "hey!", "hi", "hii", "heyy", "hello"
+Bad:
+"haha what are you doing?"
 
-and the person is unknown/new:
-- do NOT reply with "hey how are you?"
-- do NOT reply with "hey what's up?"
-- create a low-pressure conversational hook
-- make it easy for the other person to continue
-- do not use pickup-line energy
+Better:
+React to the exact unusual thing they mentioned.
 
-STYLE:
-- lowercase is preferred
-- conversational punctuation
-- natural contractions
-- concise
-- casual Indian Gen-Z texting style when appropriate
-- Hinglish when the input/context is Hinglish
-- English when the input/context is English
-- naturally mixed language when that is how the user communicates
-- slang only when it genuinely fits
-- never force Gen-Z slang
+Do not produce a generic sentence that could fit hundreds of conversations.
 
-BANNED / AVOID:
-- "rizz"
-- "no cap"
-- "fr fr"
-- "slay"
-- "bussin"
-- "haha" as empty filler
-- pickup lines
-- motivational language
-- dating-coach language
-- robotic wording
-- overly polished corporate grammar
-- excessive punctuation
-- fake confidence
-- assuming attraction
+If there is no useful specific detail, use the conversational situation itself intelligently.
 
-EMOJIS:
-- zero emojis by default
-- at most one emoji per reply
-- only use naturally fitting subtle emojis:
-😭 💀 🫠 👀 🫡
-- never use 😉 🔥 😘 🌹
+==================================================
+HUMAN BEHAVIOUR
+==================================================
 
-REPLY DIVERSITY:
-Generate exactly 3 replies.
+A good reply does NOT always ask a question.
 
-The three replies must use genuinely different conversational angles.
+Choose naturally between:
+
+- observation
+- playful tease
+- light challenge
+- curiosity
+- callback
+- dry confidence
+- understated flirt
+- conversational hook
+- playful exaggeration
+- simple directness
+
+Questions are allowed only when they genuinely improve the conversation.
+
+Avoid interview patterns.
+
+Never automatically add:
+"how are you?"
+"what's up?"
+"kaise ho?"
+"what are you doing?"
+
+==================================================
+BUSY / DISTRACTED PERSON
+==================================================
+
+If the context indicates the other person is busy:
+
+Do not sound needy.
+
+Do not say:
+"why are you ignoring me?"
+"you don't have time for me?"
+"why are you so busy?"
+
+Instead use the situation naturally.
+
+Possible strategies:
+- lightly notice the busyness
+- tease the schedule
+- ask what has them occupied
+- make a playful observation
+
+Do NOT copy these examples literally.
+Create context-specific wording.
+
+==================================================
+DRY CONVERSATION
+==================================================
+
+If the conversation is dry:
+
+Do not desperately try to revive it.
+
+Do not stack questions.
+
+Do not write:
+"tell me something interesting"
+"so what do you like to do?"
+"how was your day?"
+
+Instead:
+- react to what exists
+- introduce a small playful angle
+- lightly challenge
+- create something easy to respond to
+
+==================================================
+HEY / HI
+==================================================
+
+If an unknown/new person sends only:
+hey
+hey!
+hi
+hii
+heyy
+hello
+
+Never automatically answer:
+"hey how are you?"
+"hey what's up?"
+
+Create a low-pressure hook.
+
+Do not assume attraction.
+
+Do not use pickup-line energy.
+
+==================================================
+LANGUAGE
+==================================================
+
+Match the user's natural language.
+
+English input -> natural English.
+
+Hinglish input -> natural Hinglish.
+
+Mixed input -> natural mixed language.
+
+Do NOT translate literally.
+
+Use Indian texting rhythm.
+
+Examples of acceptable natural phrasing:
+"kya scene"
+"acha"
+"waise"
+"itna busy?"
+"haan but"
+"fair enough"
+
+But never force slang.
+
+==================================================
+GEN-Z SLANG
+==================================================
+
+Use slang only when it naturally belongs.
+
+NEVER force:
+rizz
+no cap
+fr fr
+slay
+bussin
+sigma
+goated
+
+Never use slang merely to make the reply look Gen-Z.
+
+==================================================
+STYLE
+==================================================
+
+Mostly lowercase.
+
+Short.
+
+Effortless.
+
+Immediately sendable.
+
+No paragraphs.
+
+No essays.
+
+No explanations.
+
+No coaching.
+
+No labels.
+
+No numbering.
+
+No quotation marks.
+
+No hashtags.
+
+No markdown.
+
+Approximately 4–18 words per reply.
+
+Each reply should normally be one sentence or two tiny natural clauses.
+
+==================================================
+EMOJIS
+==================================================
+
+Zero emojis by default.
+
+At most one emoji per reply.
+
+Allowed:
+😭
+💀
+🫠
+👀
+🫡
+
+Never:
+😉
+🔥
+😘
+🌹
+
+Do not use an emoji just because one is allowed.
+
+==================================================
+THREE-ANGLE GENERATION
+==================================================
+
+Generate three genuinely different conversational moves.
+
+Do NOT simply rewrite the same sentence three times.
+
+Possible internal angle combinations:
+
+Reply A:
+most natural / safest
+
+Reply B:
+more playful / teasing
+
+Reply C:
+different conversational opening / curiosity / dry confidence
+
+But select angles based on context.
+
+If flirting is inappropriate, do not flirt.
+
+If stranger, do not manufacture chemistry.
+
+If the conversation is already playful, allow more personality.
+
+==================================================
+ANTI-CRINGE FILTER
+==================================================
+
+Reject any candidate that feels:
+
+- scripted
+- generic
+- pickup-line-like
+- overly clever
+- desperate
+- overly romantic
+- corporate
+- motivational
+- therapist-like
+- artificially Gen-Z
+- too polished
+- unnatural for WhatsApp/Instagram texting
+
+Also reject:
+"haha" used only as filler.
+
+==================================================
+ANTI-REPETITION FILTER
+==================================================
+
+Never repeat:
+
+- previous replies
+- previous jokes
+- same opening
+- same question
+- same sentence structure
+- same punchline
+- same emoji pattern
+
+If the user asks for "or do", generate NEW conversational moves.
+
+==================================================
+"OR DO" / "AUR DO" MODE
+==================================================
+
+If the user indicates:
+
+"or do"
+"aur do"
+"more"
+"more options"
+"aur accha"
+"better ones"
+"yeh accha nahi laga"
+"not good"
+"try again"
+
+treat it as feedback on the previous generation.
+
+Do NOT start from zero.
+
+Use:
+- original situation
+- original incoming message
+- conversation history
+- previous replies
+- user's feedback
+
+Then deliberately move away from the previous answer style.
 
 For example:
-- one can be playful
-- one can be curious
-- one can be dry/confident
 
-But do not force these categories if they do not fit the situation.
+If previous replies were all questions,
+generate more statement-based replies.
 
-Every reply must:
-- be immediately sendable
-- give the other person something natural to respond to
-- fit the actual context
-- sound human
-- avoid repeating the same sentence structure
+If previous replies were teasing,
+try a more natural observation.
 
-LENGTH:
-- exactly 1 sentence per reply
-- or two very short natural clauses
-- approximately 4–18 words
-- never write a paragraph
+If previous replies were too flirty,
+reduce romantic intensity.
 
-OUTPUT:
-Return EXACTLY THREE replies.
-Each reply MUST be on its own line.
-Do not number them.
-Do not use bullets.
-Do not add labels.
-Do not add quotation marks around replies.
-Do not add explanations.
-Do not add an introduction.
-Do not add commentary before or after the replies.
+If previous replies were too boring,
+increase personality without becoming cringe.
 
-Your entire response must contain only the three reply lines.
+If user says "accha nahi laga",
+do not defend previous replies.
+Simply produce substantially better alternatives.
+
+==================================================
+QUALITY PRIORITY
+==================================================
+
+Prioritize in this exact order:
+
+1. Correct understanding
+2. Social appropriateness
+3. Natural human wording
+4. Context specificity
+5. Conversational usefulness
+6. Distinctness
+7. Tone
+8. Gen-Z flavour
+
+Never sacrifice naturalness for slang.
+
+==================================================
+OUTPUT
+==================================================
+
+Return exactly:
+
+{
+  "replies": [
+    "reply one",
+    "reply two",
+    "reply three"
+  ]
+}
+
+Exactly three strings.
+
+No additional fields.
+No explanation.
+No commentary.
+No labels.
 `;
+
+
+/*
+========================================================
+HIGH-VALUE BEHAVIOURAL EXAMPLES
+========================================================
+*/
 
 const SHOTS = [
   {
     role: "user",
-    content: `SITUATION: hinge/dating app
-TONE: subtle flirty
-INPUT: "her hinge prompt: key to my heart is maggie and tea (ofc not together)"
-
-Write exactly 3 replies. Each on its own line. Nothing else.`
-  },
-  {
-    role: "assistant",
-    content: `okay but what kind of tea are we talking 👀
-so if i show up with maggie and chai am i basically in 😭
-maggie and tea separately, character development`
-  },
-
-  {
-    role: "user",
-    content: `SITUATION: conversation going dry
-TONE: funny
-INPUT: "she replied haha okay to my message"
-
-Write exactly 3 replies. Each on its own line. Nothing else.`
-  },
-  {
-    role: "assistant",
-    content: `nah be honest was that actually funny or are you just being nice 😭
-the haha okay is very convincing 💀
-okay that was a test. you passed btw`
-  },
-
-  {
-    role: "user",
-    content: `SITUATION: complete stranger first contact
+    content: `
+SITUATION: unknown person, first contact
 TONE: chill
-INPUT: "unknown girl sent hey first time"
 
-Write exactly 3 replies. Each on its own line. Nothing else.`
+ACTUAL INCOMING MESSAGE:
+hey
+
+USER GOAL:
+start a conversation without sounding boring
+
+Generate three replies.
+`
   },
   {
     role: "assistant",
-    content: `finally someone who types hey and not heyyyy 😭
-hey — okay this is either a new conversation or a very short one
-oh hey, what's the scene`
+    content: JSON.stringify({
+      replies: [
+        "oh hey, interesting timing",
+        "hey — okay, what's the scene",
+        "well this is a promising little hey"
+      ]
+    })
   },
 
   {
     role: "user",
-    content: `SITUATION: crush
-TONE: subtle flirty
-INPUT: "crush ne wyd pucha"
+    content: `
+SITUATION: crush
+TONE: playful
 
-Write exactly 3 replies. Each on its own line. Nothing else.`
+ACTUAL INCOMING MESSAGE:
+wyd
+
+USER GOAL:
+reply naturally and keep the conversation going
+
+Generate three replies.
+`
   },
   {
     role: "assistant",
-    content: `kuch aisa jo probably tumhara favorite nahi hoga 😭
-sochne wala kaam — tum batao actually
-honestly nothing interesting, which is why i needed this message`
+    content: JSON.stringify({
+      replies: [
+        "pretending i'm productive, it's going great",
+        "nothing interesting till you showed up",
+        "currently doing absolutely nothing impressive"
+      ]
+    })
+  },
+
+  {
+    role: "user",
+    content: `
+SITUATION: conversation getting dry
+TONE: funny
+
+ACTUAL INCOMING MESSAGE:
+haha okay
+
+USER GOAL:
+bring some personality back without trying too hard
+
+Generate three replies.
+`
+  },
+  {
+    role: "assistant",
+    content: JSON.stringify({
+      replies: [
+        "that haha okay had absolutely no enthusiasm behind it",
+        "okay that sounded suspiciously final",
+        "i'm choosing to believe that was a good haha"
+      ]
+    })
+  },
+
+  {
+    role: "user",
+    content: `
+SITUATION: crush, already talking
+TONE: subtle playful
+
+ACTUAL INCOMING MESSAGE:
+aaj bohot busy thi
+
+USER GOAL:
+tease her lightly about being busy
+
+Generate three replies.
+`
+  },
+  {
+    role: "assistant",
+    content: JSON.stringify({
+      replies: [
+        "aaj toh schedule ne tumhe pura kidnap kar liya",
+        "itni busy ki duniya se attendance hi gayab",
+        "acha so today you were officially unavailable"
+      ]
+    })
+  },
+
+  {
+    role: "user",
+    content: `
+SITUATION: early conversation
+TONE: natural
+
+ACTUAL INCOMING MESSAGE:
+ghar pe hu
+
+USER GOAL:
+continue the conversation naturally without interview questions
+
+Generate three replies.
+`
+  },
+  {
+    role: "assistant",
+    content: JSON.stringify({
+      replies: [
+        "ghar pe hu is giving very peaceful evening energy",
+        "same, aaj ghar hi surprisingly interesting lag raha",
+        "ghar pe ho toh aaj ka plan bhi wahi hai?"
+      ]
+    })
+  },
+
+  {
+    role: "user",
+    content: `
+SITUATION: dating app
+TONE: playful
+
+ACTUAL INCOMING MESSAGE:
+her prompt says: key to my heart is maggie and chai
+
+USER GOAL:
+comment specifically on the prompt
+
+Generate three replies.
+`
+  },
+  {
+    role: "assistant",
+    content: JSON.stringify({
+      replies: [
+        "maggie and chai separately or are we testing boundaries here",
+        "okay the chai part i understand, maggie needs further investigation",
+        "so basically the application process starts with maggie"
+      ]
+    })
+  },
+
+  {
+    role: "user",
+    content: `
+SITUATION: user disliked previous replies
+TONE: natural
+
+PREVIOUS REPLIES:
+"hey what's up"
+"hey how are you"
+"so how's your day"
+
+USER FEEDBACK:
+or do, these are too boring
+
+ACTUAL INCOMING MESSAGE:
+hey
+
+Generate three NEW replies.
+Do not reuse the previous angle.
+`
+  },
+  {
+    role: "assistant",
+    content: JSON.stringify({
+      replies: [
+        "oh hey, you made the first move",
+        "hey — now i'm curious what made you text",
+        "well this is better than another random follow request"
+      ]
+    })
   }
 ];
 
+
+/*
+========================================================
+UTILITY FUNCTIONS
+========================================================
+*/
+
+function cleanString(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function normalizeForCompare(value) {
+  return cleanString(value)
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[.!?,]+$/g, "");
+}
+
 function cleanReply(text) {
-  return String(text || "")
-    .trim()
-    .replace(/^["'`]+|["'`]+$/g, "")
+  let value = cleanString(text);
+
+  value = value
+    .replace(/^["'`]+/, "")
+    .replace(/["'`]+$/, "")
     .replace(/^(?:option|reply|response)\s*\d+\s*[:.)-]\s*/i, "")
     .replace(/^\d+\s*[:.)-]\s*/, "")
     .replace(/^[-•*]\s*/, "")
     .trim();
+
+  return value;
 }
 
-function parseReplies(raw) {
-  const lines = String(raw || "")
-    .split(/\r?\n/)
+function validateReplies(value) {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  if (!Array.isArray(value.replies)) {
+    return null;
+  }
+
+  const replies = value.replies
     .map(cleanReply)
     .filter(Boolean);
 
   const unique = [];
 
-  for (const line of lines) {
-    if (!unique.some(x => x.toLowerCase() === line.toLowerCase())) {
-      unique.push(line);
+  for (const reply of replies) {
+    const normalized = normalizeForCompare(reply);
+
+    if (!normalized) continue;
+
+    if (!unique.some(x => normalizeForCompare(x) === normalized)) {
+      unique.push(reply);
     }
+  }
+
+  if (unique.length !== 3) {
+    return null;
   }
 
   return unique.slice(0, 3);
 }
 
+function sanitizeHistory(history) {
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .slice(-12)
+    .map(item => ({
+      role: item?.role === "assistant" ? "assistant" : "user",
+      content: cleanString(item?.content).slice(0, 1500)
+    }))
+    .filter(item => item.content);
+}
+
+function sanitizePreviousReplies(value) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map(cleanString)
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+
+/*
+========================================================
+BUILD CONTEXT
+========================================================
+*/
+
+function buildUserContext({
+  msg,
+  tone,
+  ctx,
+  history,
+  previousReplies,
+  feedback,
+  mode
+}) {
+  const safeHistory = sanitizeHistory(history);
+  const safePrevious = sanitizePreviousReplies(previousReplies);
+
+  return `
+CONVERSATION STATE
+
+MODE:
+${mode || "new"}
+
+RELATIONSHIP / SITUATION:
+${ctx}
+
+DESIRED TONE:
+${tone}
+
+ACTUAL USER INPUT:
+${msg}
+
+PREVIOUS CONVERSATION:
+${
+  safeHistory.length
+    ? safeHistory
+        .map(x => `${x.role.toUpperCase()}: ${x.content}`)
+        .join("\n")
+    : "(none provided)"
+}
+
+PREVIOUS GENERATED REPLIES:
+${
+  safePrevious.length
+    ? safePrevious.map((x, i) => `${i + 1}. ${x}`).join("\n")
+    : "(none)"
+}
+
+USER FEEDBACK:
+${feedback || "(none)"}
+
+IMPORTANT:
+
+If the input is a normal incoming message, respond to that message.
+
+If the input contains instructions such as "or do", "aur do", "better",
+"accha nahi laga", etc., treat that as feedback/request for regeneration,
+NOT as something the other person said.
+
+If previous replies exist, do not recycle their wording or conversational angle.
+
+Think about the social situation silently first.
+
+Then return exactly three replies in the required JSON structure.
+`;
+}
+
+
+/*
+========================================================
+API CALL
+========================================================
+*/
+
+async function callGroq({
+  key,
+  messages
+}) {
+  const response = await fetch(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + key,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: MODEL,
+
+        messages,
+
+        temperature: 0.78,
+
+        top_p: 0.92,
+
+        reasoning_effort: "medium",
+
+        reasoning_format: "hidden",
+
+        max_completion_tokens: 300,
+
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "rizzai_replies",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                replies: {
+                  type: "array",
+                  items: {
+                    type: "string"
+                  },
+                  minItems: 3,
+                  maxItems: 3
+                }
+              },
+              required: ["replies"],
+              additionalProperties: false
+            }
+          }
+        }
+      })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(
+      data?.error?.message ||
+      "Groq request failed"
+    );
+
+    error.status = response.status;
+    error.provider = data?.error;
+
+    throw error;
+  }
+
+  const content =
+    data?.choices?.[0]?.message?.content || "";
+
+  let parsed;
+
+  try {
+    parsed = JSON.parse(content);
+  } catch {
+    const error = new Error("Invalid structured response");
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+
+  const replies = validateReplies(parsed);
+
+  if (!replies) {
+    const error = new Error("Invalid reply set");
+    error.code = "INVALID_REPLY_SET";
+    throw error;
+  }
+
+  return replies;
+}
+
+
+/*
+========================================================
+RETRY / FALLBACK
+========================================================
+*/
+
+function shouldRetry(error) {
+  const status = Number(error?.status);
+
+  return (
+    status === 408 ||
+    status === 409 ||
+    status === 429 ||
+    status >= 500 ||
+    error?.code === "INVALID_JSON" ||
+    error?.code === "INVALID_REPLY_SET"
+  );
+}
+
+
+/*
+========================================================
+HANDLER
+========================================================
+*/
+
 module.exports = async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "*"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, OPTIONS"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -236,19 +951,39 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+
     const body = req.body || {};
 
-    const msg = typeof body.msg === "string"
-      ? body.msg.trim()
-      : "";
+    const msg =
+      typeof body.msg === "string"
+        ? body.msg.trim()
+        : "";
 
-    const tone = typeof body.tone === "string"
-      ? body.tone.trim()
-      : "chill";
+    const tone =
+      typeof body.tone === "string"
+        ? body.tone.trim()
+        : "chill";
 
-    const ctx = typeof body.ctx === "string"
-      ? body.ctx.trim()
-      : "unknown";
+    const ctx =
+      typeof body.ctx === "string"
+        ? body.ctx.trim()
+        : "unknown";
+
+    const feedback =
+      typeof body.feedback === "string"
+        ? body.feedback.trim()
+        : "";
+
+    const mode =
+      typeof body.mode === "string"
+        ? body.mode.trim()
+        : "new";
+
+    const history =
+      sanitizeHistory(body.history);
+
+    const previousReplies =
+      sanitizePreviousReplies(body.previousReplies);
 
     if (!msg) {
       return res.status(400).json({
@@ -256,114 +991,162 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const GROQ_KEY = process.env.GROQ_API_KEY;
+    const GROQ_KEY =
+      process.env.GROQ_API_KEY;
 
     if (!GROQ_KEY) {
-      console.error("GROQ_API_KEY is missing");
+      console.error(
+        "GROQ_API_KEY is missing"
+      );
+
       return res.status(500).json({
         error: "AI service is not configured"
       });
     }
 
-    const userMsg = `
-SITUATION: ${ctx}
-TONE: ${tone}
-
-USER INPUT:
-${msg}
-
-TASK:
-Understand the actual incoming message and the user's goal.
-
-Return exactly 3 natural replies.
-
-Each reply must:
-- be immediately sendable
-- be 4–18 words approximately
-- be one sentence or two very short clauses
-- use a genuinely different angle
-- match the language and energy of the input
-- contain no label
-- contain no numbering
-- contain no explanation
-
-Return only the three replies, one per line.
-`;
-
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + GROQ_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
-          messages: [
-            {
-              role: "system",
-              content: SYSTEM
-            },
-            ...SHOTS,
-            {
-              role: "user",
-              content: userMsg
-            }
-          ],
-          temperature: 0.82,
-          max_tokens: 220,
-          reasoning_effort: "low"
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Groq API error:", {
-        status: response.status,
-        error: data?.error || data
+    const contextMessage =
+      buildUserContext({
+        msg,
+        tone,
+        ctx,
+        history,
+        previousReplies,
+        feedback,
+        mode
       });
 
-      if (response.status === 401) {
+    const messages = [
+      {
+        role: "system",
+        content: SYSTEM
+      },
+      ...SHOTS,
+      {
+        role: "user",
+        content: contextMessage
+      }
+    ];
+
+    let replies = null;
+    let lastError = null;
+
+    /*
+      First attempt.
+    */
+
+    try {
+      replies = await callGroq({
+        key: GROQ_KEY,
+        messages
+      });
+    } catch (error) {
+      lastError = error;
+
+      console.error(
+        "Primary RizzAI generation failed:",
+        {
+          status: error?.status,
+          code: error?.code,
+          message: error?.message
+        }
+      );
+    }
+
+    /*
+      Second attempt only for recoverable failures.
+      Slightly lower randomness + explicit recovery instruction.
+    */
+
+    if (!replies && shouldRetry(lastError)) {
+
+      try {
+
+        const recoveryMessages = [
+          ...messages,
+          {
+            role: "user",
+            content: `
+RECOVERY PASS.
+
+The previous generation was unusable.
+
+Generate three completely valid replies again.
+
+Prioritize:
+- natural human wording
+- exact context
+- distinct angles
+- no repetition
+- no generic filler
+- exactly three strings
+`
+          }
+        ];
+
+        replies = await callGroq({
+          key: GROQ_KEY,
+          messages: recoveryMessages
+        });
+
+      } catch (error) {
+
+        lastError = error;
+
+        console.error(
+          "Recovery generation failed:",
+          {
+            status: error?.status,
+            code: error?.code,
+            message: error?.message
+          }
+        );
+      }
+    }
+
+    if (!replies) {
+
+      const status =
+        Number(lastError?.status);
+
+      if (status === 401) {
         return res.status(502).json({
           error: "AI authentication failed"
         });
       }
 
-      if (response.status === 429) {
+      if (status === 429) {
         return res.status(503).json({
           error: "AI is temporarily busy. Please retry."
         });
       }
 
-      return res.status(502).json({
-        error: "AI provider error"
-      });
-    }
-
-    const raw = data?.choices?.[0]?.message?.content || "";
-
-    const replies = parseReplies(raw);
-
-    if (replies.length < 3) {
-      console.error("Invalid AI output:", raw);
+      if (status >= 500) {
+        return res.status(503).json({
+          error: "AI provider is temporarily unavailable. Please retry."
+        });
+      }
 
       return res.status(502).json({
-        error: "AI returned an incomplete response. Please retry."
+        error: "RizzAI could not generate a valid reply."
       });
     }
 
     return res.status(200).json({
-      replies
+      replies,
+      mode,
+      model: MODEL
     });
 
   } catch (error) {
-    console.error("RizzAI server error:", error);
+
+    console.error(
+      "RizzAI unexpected server error:",
+      error
+    );
 
     return res.status(500).json({
-      error: "RizzAI could not generate a reply right now. Please try again."
+      error:
+        "RizzAI could not generate a reply right now. Please try again."
     });
   }
 };
