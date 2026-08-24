@@ -299,9 +299,8 @@ async function callGroq(apiKey, model, messages) {
         model,
         messages,
         temperature: 0.92,
-        max_tokens: 300
-        // NO response_format json_schema — causes errors on Groq reasoning models
-        // NO reasoning_effort — not needed, increases token usage unnecessarily
+        max_tokens: 1024,
+        reasoning_effort: "low"
       })
     }
   );
@@ -314,6 +313,8 @@ async function callGroq(apiKey, model, messages) {
     throw err;
   }
 
+  // gpt-oss reasoning models: actual reply is in message.content
+  // Reasoning chain goes to message.reasoning separately — we ignore that
   return data?.choices?.[0]?.message?.content || "";
 }
 
