@@ -1,1869 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
-/>
-
-<meta
-  name="theme-color"
-  content="#090910"
-/>
-
-<meta
-  name="description"
-  content="RizzAI — natural replies for real conversations"
-/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>RizzAI</title>
-
-<link
-  rel="preconnect"
-  href="https://fonts.googleapis.com"
-/>
-
-<link
-  rel="preconnect"
-  href="https://fonts.gstatic.com"
-  crossorigin
-/>
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-  rel="stylesheet"
-/>
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+:root {
+  --bg: #0A0906;
+  --surface: #111009;
+  --surface2: #181510;
+  --border: rgba(201,169,110,0.12);
+  --border-hover: rgba(201,169,110,0.28);
+  --gold: #C9A96E;
+  --gold-dim: rgba(201,169,110,0.6);
+  --gold-glow: rgba(201,169,110,0.08);
+  --text: #F5F0E8;
+  --text-dim: rgba(245,240,232,0.45);
+  --text-muted: rgba(245,240,232,0.25);
+  --red: #E05555;
+  --green: #6FCF97;
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
-:root{
-  --bg:#090910;
-  --card:#11111b;
-  --input:#181824;
-  --border:#29293d;
-  --border-hover:#454565;
-  --text:#f3f1ff;
-  --muted:#85859d;
-  --dim:#505067;
-  --purple:#7c3aed;
-  --purple2:#6d28d9;
-  --danger:#ef4444;
-  --success:#10b981;
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 80px;
 }
 
-html{
-  min-height:100%;
+.wrap { width: 100%; max-width: 480px; }
+
+/* ─── HEADER ─── */
+.header { text-align: center; margin-bottom: 28px; padding-top: 8px; }
+.logo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: var(--gold); letter-spacing: -0.02em; }
+.logo span { color: var(--text-dim); }
+.tagline { font-size: 12px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.04em; }
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
 }
 
-body{
-  margin:0;
-  min-height:100vh;
-
-  font-family:'Inter',sans-serif;
-
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(124,58,237,.14),
-      transparent 35%
-    ),
-    var(--bg);
-
-  color:var(--text);
-
-  padding:
-    22px
-    16px
-    70px;
-
-  -webkit-font-smoothing:antialiased;
+/* ─── LABEL ─── */
+.lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
 }
 
-button,
-textarea,
-select{
-  font:inherit;
+/* ─── TEXTAREA ─── */
+textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  resize: none;
+  outline: none;
+  min-height: 90px;
+  line-height: 1.65;
+  transition: border-color 0.2s;
+}
+textarea:focus { border-color: var(--gold-dim); }
+textarea::placeholder { color: var(--text-muted); }
+
+/* ─── SELECTS ROW ─── */
+.selects { display: flex; gap: 8px; margin-top: 10px; }
+select {
+  flex: 1;
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+select:focus { border-color: var(--gold-dim); }
+
+/* ─── LANG BAR ─── */
+.lang-bar { display: flex; gap: 6px; margin-top: 10px; }
+.lang-btn {
+  flex: 1;
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  padding: 6px 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.lang-btn.active {
+  background: var(--gold-glow);
+  border-color: var(--gold-dim);
+  color: var(--gold);
 }
 
-button{
-  -webkit-tap-highlight-color:transparent;
+/* ─── GENERATE BUTTON ─── */
+.gen-btn {
+  width: 100%;
+  background: var(--gold);
+  border: none;
+  color: #0A0906;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  margin-top: 12px;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s;
+}
+.gen-btn:hover { opacity: 0.88; }
+.gen-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── ERROR ─── */
+.err { font-size: 12px; color: var(--red); text-align: center; margin-top: 8px; min-height: 16px; }
+
+/* ─── LOADING DOTS ─── */
+.dots { display: inline-flex; gap: 4px; align-items: center; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: #0A0906; animation: bounce 1s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce { 0%,100%{opacity:0.3;transform:scale(0.7)} 50%{opacity:1;transform:scale(1)} }
+
+/* ─── EMPTY STATE ─── */
+.empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 2;
 }
 
-.wrap{
-  width:100%;
-  max-width:540px;
-  margin:0 auto;
+/* ─── REPLY CARDS ─── */
+.reply-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.12s;
+  position: relative;
+}
+.reply-card:hover { border-color: var(--border-hover); transform: translateX(2px); }
+.reply-card.copied { border-color: var(--green) !important; }
+
+.reply-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+
+.badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.badge-gold { background: rgba(201,169,110,0.15); color: var(--gold); }
+.badge-dim { background: rgba(245,240,232,0.06); color: var(--text-muted); }
+
+.copy-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 5px;
+  transition: color 0.15s;
+}
+.copy-btn:hover { color: var(--gold); }
+.copy-btn.done { color: var(--green); }
+
+.reply-text {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
 }
 
-/* HEADER */
+/* ─── MORE BUTTON ─── */
+.more-btn {
+  width: 100%;
+  background: transparent;
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.more-btn:hover { border-color: var(--border-hover); color: var(--gold); }
 
-.header{
-  text-align:center;
-  padding:
-    12px
-    0
-    24px;
+/* ─── DETECT BADGE ─── */
+.lang-detect {
+  font-size: 10px;
+  color: var(--gold-dim);
+  text-align: center;
+  margin-top: 5px;
+  min-height: 14px;
 }
 
-.logo-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:7px;
+@media (max-width: 400px) {
+  .selects { flex-direction: column; }
 }
-
-.logo-icon{
-  width:36px;
-  height:36px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:11px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #ec4899
-    );
-
-  box-shadow:
-    0 8px 30px
-    rgba(124,58,237,.23);
-
-  font-size:17px;
-}
-
-.logo-text{
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:-.03em;
-
-  background:
-    linear-gradient(
-      90deg,
-      #fff,
-      #b78aff
-    );
-
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-.tagline{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* CARD */
-
-.card{
-  background:
-    rgba(17,17,27,.95);
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:18px;
-
-  padding:18px;
-
-  margin-bottom:14px;
-
-  box-shadow:
-    0 15px 50px
-    rgba(0,0,0,.18);
-}
-
-.lbl{
-  display:block;
-
-  margin-bottom:9px;
-
-  color:#66667d;
-
-  font-size:10px;
-  font-weight:700;
-
-  letter-spacing:.09em;
-  text-transform:uppercase;
-}
-
-textarea{
-  display:block;
-
-  width:100%;
-
-  min-height:120px;
-
-  resize:vertical;
-
-  background:
-    var(--input);
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:12px;
-
-  outline:none;
-
-  color:var(--text);
-
-  padding:
-    13px
-    14px;
-
-  font-size:14px;
-
-  line-height:1.6;
-
-  transition:
-    border-color .2s ease,
-    box-shadow .2s ease;
-}
-
-textarea:focus{
-  border-color:
-    rgba(124,58,237,.8);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(124,58,237,.08);
-}
-
-textarea::placeholder{
-  color:#4b4b62;
-}
-
-/* CONTROLS */
-
-.controls{
-  display:grid;
-
-  grid-template-columns:
-    1fr
-    1fr;
-
-  gap:9px;
-
-  margin-top:10px;
-}
-
-select{
-  width:100%;
-
-  background:
-    var(--input);
-
-  border:
-    1px solid
-    var(--border);
-
-  color:var(--text);
-
-  padding:
-    10px
-    11px;
-
-  border-radius:10px;
-
-  outline:none;
-
-  font-size:12px;
-
-  cursor:pointer;
-}
-
-select:focus{
-  border-color:
-    var(--purple);
-}
-
-/* GENERATE */
-
-.generate{
-  width:100%;
-
-  min-height:46px;
-
-  margin-top:11px;
-
-  border:0;
-
-  border-radius:12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--purple),
-      var(--purple2)
-    );
-
-  color:#fff;
-
-  font-size:14px;
-  font-weight:600;
-
-  cursor:pointer;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  gap:8px;
-
-  box-shadow:
-    0 8px 25px
-    rgba(124,58,237,.18);
-
-  transition:
-    transform .15s ease,
-    filter .15s ease,
-    opacity .15s ease;
-}
-
-.generate:hover{
-  filter:brightness(1.08);
-  transform:translateY(-1px);
-}
-
-.generate:active{
-  transform:translateY(0);
-}
-
-.generate:disabled{
-  opacity:.58;
-  cursor:not-allowed;
-  transform:none;
-}
-
-/* STATUS */
-
-.status{
-  min-height:18px;
-
-  margin-top:8px;
-
-  text-align:center;
-
-  color:var(--danger);
-
-  font-size:12px;
-
-  line-height:1.4;
-}
-
-/* RESULTS */
-
-.results-header{
-  display:flex;
-
-  align-items:center;
-  justify-content:space-between;
-
-  margin:
-    5px
-    2px
-    9px;
-}
-
-.results-title{
-  color:#73738c;
-
-  font-size:10px;
-
-  font-weight:700;
-
-  letter-spacing:.09em;
-
-  text-transform:uppercase;
-}
-
-.results-hint{
-  color:#4e4e64;
-
-  font-size:10px;
-}
-
-.reply{
-  background:
-    rgba(17,17,27,.95);
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:13px;
-
-  padding:
-    14px
-    15px;
-
-  margin-bottom:9px;
-
-  transition:
-    border-color .18s ease,
-    transform .18s ease,
-    background .18s ease;
-
-  cursor:pointer;
-}
-
-.reply:hover{
-  border-color:
-    var(--border-hover);
-
-  transform:
-    translateY(-1px);
-}
-
-.reply.best{
-  border-color:
-    rgba(124,58,237,.48);
-
-  background:
-    linear-gradient(
-      120deg,
-      rgba(124,58,237,.08),
-      rgba(17,17,27,.96)
-    );
-}
-
-.reply-top{
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:9px;
-}
-
-.badge{
-  display:inline-flex;
-
-  align-items:center;
-
-  border-radius:20px;
-
-  padding:
-    3px
-    8px;
-
-  font-size:9px;
-
-  font-weight:700;
-
-  letter-spacing:.06em;
-
-  text-transform:uppercase;
-}
-
-.badge.best{
-  color:#b58cff;
-
-  background:
-    rgba(124,58,237,.16);
-}
-
-.badge.alt{
-  color:#74748c;
-
-  background:
-    rgba(255,255,255,.045);
-}
-
-.copy{
-  border:0;
-
-  background:transparent;
-
-  color:#77778e;
-
-  cursor:pointer;
-
-  padding:
-    3px
-    0
-    3px
-    10px;
-
-  font-size:11px;
-}
-
-.copy:hover{
-  color:#b0aec5;
-}
-
-.reply-text{
-  color:#f0eef9;
-
-  font-size:15px;
-
-  line-height:1.55;
-
-  font-weight:500;
-
-  word-break:break-word;
-}
-
-/* EMPTY */
-
-.empty{
-  border:
-    1px dashed
-    #242438;
-
-  border-radius:14px;
-
-  padding:
-    38px
-    18px;
-
-  text-align:center;
-
-  color:#4b4b62;
-
-  font-size:12px;
-
-  line-height:1.8;
-}
-
-.empty-icon{
-  font-size:22px;
-
-  opacity:.65;
-
-  margin-bottom:7px;
-}
-
-/* LOADING */
-
-.loading{
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:13px;
-
-  padding:22px;
-
-  text-align:center;
-
-  color:#66667d;
-
-  font-size:12px;
-}
-
-.dots{
-  display:inline-flex;
-
-  gap:5px;
-
-  align-items:center;
-
-  margin-bottom:7px;
-}
-
-.dot{
-  width:6px;
-  height:6px;
-
-  border-radius:50%;
-
-  background:#fff;
-
-  animation:
-    pulse 1.05s
-    ease-in-out
-    infinite;
-}
-
-.dot:nth-child(2){
-  animation-delay:.15s;
-}
-
-.dot:nth-child(3){
-  animation-delay:.3s;
-}
-
-@keyframes pulse{
-
-  0%,100%{
-    opacity:.2;
-    transform:scale(.7);
-  }
-
-  50%{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-/* MOBILE */
-
-@media(max-width:430px){
-
-  body{
-    padding:
-      17px
-      12px
-      50px;
-  }
-
-  .card{
-    padding:15px;
-  }
-
-  .controls{
-    grid-template-columns:1fr;
-  }
-
-  textarea{
-    min-height:125px;
-  }
-
-  .reply-text{
-    font-size:14px;
-  }
-}
-
 </style>
-
 </head>
 
 <body>
-
 <div class="wrap">
 
-  <header class="header">
+  <div class="header">
+    <div class="logo">Rizz<span>AI</span></div>
+    <div class="tagline">paste the message · get the reply · send it</div>
+  </div>
 
-    <div class="logo-row">
+  <div class="card">
+    <span class="lbl">Their message or situation</span>
+    <textarea id="msgInput" rows="4"
+      placeholder="e.g. ek ladki ka hey aya hai, kya reply du&#10;e.g. she said haha okay, baat dry ho rahi hai&#10;e.g. usse puchna hai kya kar rhi hai lately"></textarea>
 
-      <div class="logo-icon">
-        💬
-      </div>
-
-      <div class="logo-text">
-        RizzAI
-      </div>
-
+    <div class="selects">
+      <select id="tone">
+        <option value="chill">😌 Chill</option>
+        <option value="flirty">✨ Flirty</option>
+        <option value="funny">😭 Funny</option>
+        <option value="cute">🤍 Cute</option>
+        <option value="savage">🫠 Savage</option>
+      </select>
+      <select id="ctx">
+        <option value="unknown">Unknown person</option>
+        <option value="crush">Crush</option>
+        <option value="friend">Friend</option>
+        <option value="early">Just started talking</option>
+        <option value="ongoing">Been talking a while</option>
+        <option value="gap">Gap restart</option>
+        <option value="dry">Dry conversation</option>
+        <option value="hinge">Hinge / Dating app</option>
+      </select>
     </div>
 
-    <div class="tagline">
-      paste the message. understand the vibe. get the reply.
+    <div class="lang-bar">
+      <button class="lang-btn active" data-lang="auto" onclick="setLang('auto',this)">Auto</button>
+      <button class="lang-btn" data-lang="hinglish" onclick="setLang('hinglish',this)">Hinglish</button>
+      <button class="lang-btn" data-lang="english" onclick="setLang('english',this)">English</button>
     </div>
+    <div class="lang-detect" id="langDetect"></div>
 
-  </header>
+    <button class="gen-btn" id="genBtn" onclick="generate(false)">⚡ Generate</button>
+    <div class="err" id="err"></div>
+  </div>
 
-
-  <main>
-
-    <section class="card">
-
-      <label
-        class="lbl"
-        for="msgInput"
-      >
-        Their message / situation
-      </label>
-
-
-      <textarea
-        id="msgInput"
-        autocomplete="off"
-        spellcheck="true"
-        placeholder="paste what they said or tell me the situation...
-
-e.g. she said she's been busy lately
-e.g. uska 'wyd' aya
-e.g. unknown girl sent 'hey'
-e.g. she's taking forever to reply, kya bolu?"
-      ></textarea>
-
-
-      <div class="controls">
-
-        <div>
-
-          <label
-            class="lbl"
-            for="tone"
-          >
-            Tone
-          </label>
-
-          <select id="tone">
-
-            <option value="chill">
-              chill
-            </option>
-
-            <option value="flirty">
-              subtle flirty
-            </option>
-
-            <option value="funny">
-              funny
-            </option>
-
-            <option value="cute">
-              cute
-            </option>
-
-            <option value="savage">
-              teasing / savage
-            </option>
-
-            <option value="direct">
-              smooth / direct
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div>
-
-          <label
-            class="lbl"
-            for="ctx"
-          >
-            Context
-          </label>
-
-          <select id="ctx">
-
-            <option value="unknown">
-              unknown person
-            </option>
-
-            <option value="crush">
-              crush
-            </option>
-
-            <option value="friend">
-              friend
-            </option>
-
-            <option value="early">
-              just started talking
-            </option>
-
-            <option value="ongoing">
-              been talking a while
-            </option>
-
-            <option value="gap">
-              restarting after a gap
-            </option>
-
-            <option value="dry">
-              conversation is dry
-            </option>
-
-            <option value="hinge">
-              hinge / dating app
-            </option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="generate"
-        id="genBtn"
-        type="button"
-      >
-
-        <span>
-          ⚡
-        </span>
-
-        <span id="btnText">
-          Generate
-        </span>
-
-      </button>
-
-
-      <div
-        class="status"
-        id="status"
-        aria-live="polite"
-      ></div>
-
-    </section>
-
-
-    <section id="results">
-
-      <div class="empty">
-
-        <div class="empty-icon">
-          💬
-        </div>
-
-        paste their message above<br>
-
-        hit generate — 3 replies will show here<br>
-
-        click any reply to copy
-
-      </div>
-
-    </section>
-
-  </main>
+  <div id="results">
+    <div class="empty">— type above, hit generate —<br>3 replies aayenge<br>click any to copy</div>
+  </div>
 
 </div>
 
-
 <script>
-
-"use strict";
-
-
-/* =========================================================
-   CONFIG
-========================================================= */
-
-const API_ENDPOINT =
-  "/api/generate";
-
-
-/* =========================================================
-   UI DATA
-========================================================= */
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let selectedLang = 'auto';
+let currentReplies = [];
 
 const TONES = {
-
-  chill:
-    "chill, effortless, low-pressure, natural",
-
-  flirty:
-    "subtle flirty, playful tension, confident but not desperate",
-
-  funny:
-    "actually witty and naturally funny, not try-hard",
-
-  cute:
-    "warm, genuine, slightly playful, natural",
-
-  savage:
-    "light teasing, confident, playful, never mean",
-
-  direct:
-    "smooth, direct, confident, conversational, no pickup-line energy"
-
+  chill: "chill, low effort, unbothered",
+  flirty: "subtle flirty, light tension, playful but not desperate",
+  funny: "actually funny and witty",
+  cute: "warm, genuine, slightly playful",
+  savage: "confident, slightly teasing, zero neediness"
 };
 
-
-const CONTEXTS = {
-
-  unknown:
-    "complete stranger / first contact; do not assume chemistry",
-
-  crush:
-    "crush; some familiarity or interest exists",
-
-  friend:
-    "friend; comfortable casual conversation",
-
-  early:
-    "just started talking; still building familiarity",
-
-  ongoing:
-    "they have been talking for a while; existing conversational context",
-
-  gap:
-    "restarting conversation after a gap; acknowledge naturally if relevant",
-
-  dry:
-    "conversation is becoming dry; revive it without sounding desperate",
-
-  hinge:
-    "Hinge or dating app conversation; use profile/message specifics naturally"
-
+const CTXS = {
+  unknown: "complete stranger, first contact, do NOT assume chemistry",
+  crush: "crush, some familiarity exists",
+  friend: "friend, casual and comfortable",
+  early: "just started talking 1-2 times",
+  ongoing: "been talking for a while",
+  gap: "reconnecting after a gap, acknowledge lightly",
+  dry: "conversation going dry, rescue mode",
+  hinge: "hinge or dating app, react to their prompt naturally"
 };
 
-
-/* =========================================================
-   DOM
-========================================================= */
-
-const msgInput =
-  document.getElementById("msgInput");
-
-const toneInput =
-  document.getElementById("tone");
-
-const ctxInput =
-  document.getElementById("ctx");
-
-const genBtn =
-  document.getElementById("genBtn");
-
-const btnText =
-  document.getElementById("btnText");
-
-const statusBox =
-  document.getElementById("status");
-
-const results =
-  document.getElementById("results");
-
-
-/* =========================================================
-   SESSION MEMORY
-
-   This is intentionally local to the browser.
-
-   It lets:
-
-   first generation:
-      "she said she's busy"
-
-   followed by:
-      "or do"
-
-   reuse the SAME context while rejecting
-   previous replies.
-========================================================= */
-
-let session = {
-
-  lastInput: "",
-
-  lastTone: "chill",
-
-  lastContext: "unknown",
-
-  lastReplies: [],
-
-  generationCount: 0
-
-};
-
-
-let generating = false;
-
-
-/* =========================================================
-   "OR DO" DETECTION
-========================================================= */
-
-function isMoreRequest(text) {
-
-  const normalized =
-    String(text || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[.!?]+$/g, "");
-
-  const patterns = [
-
-    "or do",
-    "aur do",
-    "more",
-    "more please",
-    "another",
-    "another one",
-    "aur",
-    "aur batao",
-    "aur accha",
-    "aur accha do",
-    "better",
-    "better one",
-    "do aur",
-    "ek aur",
-    "ek aur do",
-    "more options",
-    "different",
-    "different ones"
-
-  ];
-
-  return patterns.includes(normalized);
+// ─── LANGUAGE ─────────────────────────────────────────────────────────────────
+function setLang(lang, el) {
+  selectedLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('langDetect').textContent = '';
 }
 
+function detectLang(input) {
+  const lower = input.toLowerCase();
 
-function isBetterRequest(text) {
+  // Explicit user request
+  if (/english\s*(m[eê]n|mai|mein|me|do|chahiye|dena)/i.test(lower) ||
+      /in english|english mein/i.test(lower)) return 'english';
+  if (/(hinglish\s*(m[eê]n|mai|mein|me|do|chahiye))/i.test(lower)) return 'hinglish';
 
-  const normalized =
-    String(text || "")
-      .trim()
-      .toLowerCase();
+  // Auto-detect from content
+  const hindiWords = (lower.match(/\b(yaar|bhai|kya|toh|hai|nahi|tha|thi|woh|mein|hoon|baat|bolo|karo|dekho|suno|chalo|phir|abhi|bas|ladki|ladka|dost|accha|theek|bilkul|matlab|kal|aaj|usse|uska|usne|puchna|puch|bata|aya|gyi|krna|krdo|rehti|rehta|busy|chal|rha|rhi)\b/gi) || []).length;
 
-  return (
-
-    normalized.includes("accha nahi laga") ||
-
-    normalized.includes("acha nahi laga") ||
-
-    normalized.includes("pasand nahi") ||
-
-    normalized.includes("better reply") ||
-
-    normalized.includes("aur better") ||
-
-    normalized.includes("yeh nahi") ||
-
-    normalized.includes("not good")
-
-  );
+  if (hindiWords >= 2) return 'hinglish';
+  return 'english';
 }
 
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function setStatus(message = "") {
-
-  statusBox.textContent =
-    message;
-
+function buildLangInstruction(lang) {
+  if (lang === 'hinglish') {
+    return 'LANGUAGE: Hinglish — natural mix of Hindi+English exactly like Indian Gen Z texts. Not forced. Not full Hindi. Not formal.';
+  }
+  return 'LANGUAGE: Casual Gen Z English only. Lowercase. Natural. Like iMessage or Instagram DM.';
 }
 
+// ─── GENERATE ────────────────────────────────────────────────────────────────
+async function generate(isMore = false) {
+  const msg = document.getElementById('msgInput').value.trim();
+  if (!msg) { showErr('Kuch toh type karo'); return; }
 
-/* =========================================================
-   LOADING
-========================================================= */
+  showErr('');
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
 
-function setLoading(isLoading) {
-
-  generating =
-    isLoading;
-
-  genBtn.disabled =
-    isLoading;
-
-
-  if (isLoading) {
-
-    btnText.innerHTML = `
-      <span class="dots">
-
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-
-      </span>
-
-      thinking
-    `;
-
-  } else {
-
-    btnText.textContent =
-      "Generate";
-
+  if (!isMore) {
+    currentReplies = [];
+    document.getElementById('results').innerHTML = '';
   }
 
-}
+  const tone = document.getElementById('tone').value;
+  const ctx = document.getElementById('ctx').value;
 
-
-/* =========================================================
-   LOADING SCREEN
-========================================================= */
-
-function showLoading() {
-
-  results.innerHTML = `
-
-    <div class="loading">
-
-      <div class="dots">
-
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-
-      </div>
-
-      <div>
-        reading the vibe...
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-/* =========================================================
-   NORMALIZE
-========================================================= */
-
-function normalizeReply(value) {
-
-  return String(value ?? "")
-    .replace(/\r?\n/g, " ")
-    .replace(/\s+/g, " ")
-    .replace(/^["'`]+|["'`]+$/g, "")
-    .replace(
-      /^(?:option|reply|response)\s*\d+\s*[:.)-]\s*/i,
-      ""
-    )
-    .replace(
-      /^\d+\s*[:.)-]\s*/,
-      ""
-    )
-    .replace(
-      /^[-•*]\s*/,
-      ""
-    )
-    .trim();
-
-}
-
-
-function normalizeReplies(replies) {
-
-  if (!Array.isArray(replies)) {
-    return [];
+  // Language detection
+  let lang = selectedLang;
+  if (lang === 'auto') {
+    lang = detectLang(msg);
+    document.getElementById('langDetect').textContent = `Detected: ${lang === 'hinglish' ? 'Hinglish' : 'English'}`;
   }
 
-  const output = [];
-
-  for (const item of replies) {
-
-    const text =
-      normalizeReply(item);
-
-    if (!text) continue;
-
-    const exists =
-      output.some(
-        existing =>
-          existing.toLowerCase() ===
-          text.toLowerCase()
-      );
-
-    if (!exists) {
-      output.push(text);
-    }
-
-  }
-
-  return output.slice(0,3);
-
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function renderReplies(replies) {
-
-  const clean =
-    normalizeReplies(replies);
-
-
-  if (clean.length !== 3) {
-
-    results.innerHTML = `
-
-      <div class="empty">
-
-        <div class="empty-icon">
-          🫠
-        </div>
-
-        couldn't get three usable replies<br>
-        try again
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  const labels = [
-
-    ["✦ Best","best"],
-
-    ["Alt 1","alt"],
-
-    ["Alt 2","alt"]
-
-  ];
-
-
-  results.innerHTML = `
-
-    <div class="results-header">
-
-      <span class="results-title">
-        your replies
-      </span>
-
-      <span class="results-hint">
-        tap to copy
-      </span>
-
-    </div>
-
-
-    ${clean.map((text,index)=>`
-
-      <article
-        class="reply ${index === 0 ? "best" : ""}"
-      >
-
-        <div class="reply-top">
-
-          <span
-            class="badge ${labels[index][1]}"
-          >
-            ${labels[index][0]}
-          </span>
-
-
-          <button
-            class="copy"
-            type="button"
-          >
-            Copy
-          </button>
-
-        </div>
-
-
-        <div class="reply-text">
-          ${escapeHTML(text)}
-        </div>
-
-      </article>
-
-    `).join("")}
-
-  `;
-
-
-  const cards =
-    document.querySelectorAll(".reply");
-
-
-  cards.forEach(card => {
-
-    card.addEventListener(
-      "click",
-      async event => {
-
-        if (
-          event.target.closest(".copy")
-        ) {
-          return;
-        }
-
-        const text =
-          card.querySelector(
-            ".reply-text"
-          ).textContent;
-
-        await copyReply(
-          text,
-          card
-        );
-
-      }
-    );
-
-  });
-
-
-  document
-    .querySelectorAll(".copy")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        async event => {
-
-          event.stopPropagation();
-
-          const card =
-            button.closest(".reply");
-
-          const text =
-            card.querySelector(
-              ".reply-text"
-            ).textContent;
-
-          await copyReply(
-            text,
-            card
-          );
-
-        }
-      );
-
+  const langInstruction = buildLangInstruction(lang);
+
+  // Build full message with language instruction prepended
+  const fullMsg = `${langInstruction}\n${msg}`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg: fullMsg,
+        tone: TONES[tone],
+        ctx: CTXS[ctx],
+        previousReplies: isMore ? currentReplies : []
+      })
     });
 
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data?.error || 'Error aaya');
+    if (!data.replies?.length) throw new Error('Retry karo');
+
+    currentReplies = [...currentReplies, ...data.replies];
+    renderReplies(data.replies, isMore);
+
+  } catch (e) {
+    showErr(e.message || 'Error — retry karo');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '⚡ Generate';
 }
 
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderReplies(replies, append = false) {
+  const container = document.getElementById('results');
 
-/* =========================================================
-   COPY
-========================================================= */
-
-async function copyReply(
-  text,
-  card
-) {
-
-  try {
-
-    if (
-      navigator.clipboard &&
-      window.isSecureContext
-    ) {
-
-      await navigator.clipboard
-        .writeText(text);
-
-    } else {
-
-      const area =
-        document.createElement("textarea");
-
-      area.value =
-        text;
-
-      area.style.position =
-        "fixed";
-
-      area.style.opacity =
-        "0";
-
-      document.body.appendChild(area);
-
-      area.focus();
-      area.select();
-
-      document.execCommand("copy");
-
-      area.remove();
-
-    }
-
-
-    const button =
-      card.querySelector(".copy");
-
-
-    if (button) {
-
-      button.textContent =
-        "✓ Copied";
-
-      setTimeout(() => {
-
-        button.textContent =
-          "Copy";
-
-      },1400);
-
-    }
-
-
-    card.style.borderColor =
-      "rgba(16,185,129,.65)";
-
-
-    setTimeout(() => {
-
-      card.style.borderColor =
-        "";
-
-    },1400);
-
-
-  } catch(error) {
-
-    console.error(
-      "Copy failed:",
-      error
-    );
-
+  if (!append) {
+    container.innerHTML = '';
+  } else {
+    // Remove existing more-btn if present
+    const existing = container.querySelector('.more-btn');
+    if (existing) existing.remove();
   }
 
-}
-
-
-/* =========================================================
-   SERVER RESPONSE
-========================================================= */
-
-async function readResponse(
-  response
-) {
-
-  const type =
-    response.headers.get(
-      "content-type"
-    ) || "";
-
-
-  if (
-    type.includes(
-      "application/json"
-    )
-  ) {
-
-    try {
-
-      return await response.json();
-
-    } catch {
-
-      return {};
-
-    }
-
-  }
-
-
-  const text =
-    await response.text();
-
-
-  return {
-    error:
-      text ||
-      "Invalid server response"
-  };
-
-}
-
-
-/* =========================================================
-   GENERATE
-========================================================= */
-
-async function generate() {
-
-  if (generating) {
-    return;
-  }
-
-
-  const typedInput =
-    msgInput.value.trim();
-
-
-  if (!typedInput) {
-
-    setStatus(
-      "paste their message first"
-    );
-
-    msgInput.focus();
-
-    return;
-
-  }
-
-
-  /*
-    Detect continuation commands.
-
-    "or do"
-    "aur do"
-    "better"
-    etc.
-
-    They reuse the previous conversation.
-  */
-
-  const moreRequest =
-    isMoreRequest(
-      typedInput
-    );
-
-  const betterRequest =
-    isBetterRequest(
-      typedInput
-    );
-
-
-  let actualMessage =
-    typedInput;
-
-
-  let generationMode =
-    "new";
-
-
-  if (
-    (moreRequest || betterRequest) &&
-    session.lastInput
-  ) {
-
-    actualMessage =
-      session.lastInput;
-
-    generationMode =
-      moreRequest
-        ? "more"
-        : "better";
-
-  }
-
-
-  /*
-    If user simply types "or do" before
-    any generation, treat it normally instead
-    of sending an empty context.
-  */
-
-  if (
-    (moreRequest || betterRequest) &&
-    !session.lastInput
-  ) {
-
-    actualMessage =
-      typedInput;
-
-    generationMode =
-      "new";
-
-  }
-
-
-  if (
-    actualMessage.length >
-    12000
-  ) {
-
-    setStatus(
-      "that's a lot 😭 keep it under 12,000 characters"
-    );
-
-    return;
-
-  }
-
-
-  setStatus("");
-
-  setLoading(true);
-
-  showLoading();
-
-
-  const toneKey =
-    moreRequest || betterRequest
-      ? session.lastTone
-      : toneInput.value;
-
-
-  const ctxKey =
-    moreRequest || betterRequest
-      ? session.lastContext
-      : ctxInput.value;
-
-
-  const payload = {
-
-    msg:
-      actualMessage,
-
-    tone:
-      TONES[toneKey] ||
-      TONES.chill,
-
-    ctx:
-      CONTEXTS[ctxKey] ||
-      CONTEXTS.unknown,
-
-    generationMode,
-
-    previousReplies:
-      session.lastReplies.slice(0,3)
-
-  };
-
-
-  try {
-
-    const response =
-      await fetch(
-        API_ENDPOINT,
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json",
-
-            "Accept":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(payload)
-        }
-      );
-
-
-    const data =
-      await readResponse(
-        response
-      );
-
-
-    if (!response.ok) {
-
-      console.error(
-        "RizzAI backend error:",
-        {
-          status:
-            response.status,
-
-          data
-        }
-      );
-
-
-      if (
-        response.status === 429
-      ) {
-
-        throw new Error(
-          "AI is busy right now — try again in a moment."
-        );
-
-      }
-
-
-      if (
-        response.status >= 500
-      ) {
-
-        throw new Error(
-          "RizzAI couldn't generate right now. Try again."
-        );
-
-      }
-
-
-      throw new Error(
-        data?.error ||
-        "Something went wrong. Try again."
-      );
-
-    }
-
-
-    const replies =
-      normalizeReplies(
-        data?.replies
-      );
-
-
-    if (
-      replies.length !== 3
-    ) {
-
-      console.error(
-        "Invalid RizzAI response:",
-        data
-      );
-
-      throw new Error(
-        "RizzAI returned an incomplete response. Try again."
-      );
-
-    }
-
-
-    /*
-      Save the context for:
-
-      "or do"
-      "aur do"
-      "better"
-      etc.
-    */
-
-    session.lastInput =
-      actualMessage;
-
-    session.lastTone =
-      toneKey;
-
-    session.lastContext =
-      ctxKey;
-
-    session.lastReplies =
-      replies;
-
-    session.generationCount++;
-
-
-    renderReplies(
-      replies
-    );
-
-
-    /*
-      If the user clicked Generate again
-      with the same input, the next request
-      naturally knows the previous replies.
-    */
-
-    if (
-      moreRequest ||
-      betterRequest
-    ) {
-
-      msgInput.value =
-        typedInput;
-
-    }
-
-
-  } catch(error) {
-
-    console.error(
-      "Generate error:",
-      error
-    );
-
-
-    results.innerHTML = `
-
-      <div class="empty">
-
-        <div class="empty-icon">
-          🫠
-        </div>
-
-        couldn't generate right now<br>
-        try again in a moment
-
+  const labels = ['✦ Best', 'Alt 1', 'Alt 2'];
+
+  replies.forEach((text, i) => {
+    const card = document.createElement('div');
+    card.className = 'reply-card' + (i === 0 && !append ? '' : '');
+    card.innerHTML = `
+      <div class="reply-header">
+        <span class="badge ${i === 0 && !append ? 'badge-gold' : 'badge-dim'}">${labels[i] || 'Alt'}</span>
+        <button class="copy-btn" onclick="event.stopPropagation(); copyText(this, ${JSON.stringify(text)})">Copy</button>
       </div>
-
+      <div class="reply-text">${escHtml(text)}</div>
     `;
+    card.addEventListener('click', () => copyText(card.querySelector('.copy-btn'), text));
+    container.appendChild(card);
+  });
 
-
-    setStatus(
-      error?.message ||
-      "RizzAI couldn't generate right now."
-    );
-
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
+  // Add "or do" button
+  const moreBtn = document.createElement('button');
+  moreBtn.className = 'more-btn';
+  moreBtn.textContent = 'or do — show different ones';
+  moreBtn.onclick = () => generate(true);
+  container.appendChild(moreBtn);
 }
 
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-genBtn.addEventListener(
-  "click",
-  generate
-);
-
-
-/* =========================================================
-   CTRL/CMD + ENTER
-========================================================= */
-
-msgInput.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter" &&
-      (event.ctrlKey ||
-       event.metaKey)
-    ) {
-
-      event.preventDefault();
-
-      generate();
-
+// ─── COPY ─────────────────────────────────────────────────────────────────────
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const card = btn.closest('.reply-card');
+    btn.textContent = '✓ Copied';
+    btn.classList.add('done');
+    if (card) {
+      card.classList.add('copied');
+      setTimeout(() => {
+        card.classList.remove('copied');
+        btn.textContent = 'Copy';
+        btn.classList.remove('done');
+      }, 1500);
     }
+  });
+}
 
-  }
-);
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function showErr(msg) { document.getElementById('err').textContent = msg; }
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-
-/* =========================================================
-   CLEAR ERROR WHILE TYPING
-========================================================= */
-
-msgInput.addEventListener(
-  "input",
-  () => {
-
-    if (
-      statusBox.textContent
-    ) {
-
-      setStatus("");
-
-    }
-
-  }
-);
-
-
-console.log(
-  "RizzAI ready."
-);
-
+// Ctrl+Enter to generate
+document.getElementById('msgInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.ctrlKey) generate(false);
+});
 </script>
-
 </body>
 </html>
