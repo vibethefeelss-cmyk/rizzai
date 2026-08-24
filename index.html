@@ -3,54 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0A0A14">
-<title>RizzAI — Better Replies</title>
+<meta name="theme-color" content="#0a0a14">
+<meta name="description" content="RizzAI — natural replies for real conversations">
+<title>RizzAI</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#0A0A14;
-  --card:#12121F;
-  --input:#1A1A2E;
-  --border:#2A2A45;
-  --text:#F0EFFF;
-  --muted:#8888AA;
-  --dim:#44445A;
-  --purple:#7C3AED;
-  --purple2:#9D5EFF;
-  --green:#10B981;
-  --red:#EF4444;
-}
-
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
-html{
-  min-height:100%;
+:root{
+  --bg:#090910;
+  --card:#11111b;
+  --input:#181824;
+  --border:#29293d;
+  --border-hover:#454565;
+  --text:#f3f1ff;
+  --muted:#85859d;
+  --dim:#505067;
+  --purple:#7c3aed;
+  --purple-light:#9d5cff;
+  --danger:#ef4444;
+  --success:#10b981;
 }
 
 body{
-  font-family:"Inter",sans-serif;
-  background:var(--bg);
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(124,58,237,.13),transparent 35%),
+    var(--bg);
   color:var(--text);
   min-height:100vh;
-  padding:24px 16px 60px;
+  padding:24px 16px 70px;
+  -webkit-font-smoothing:antialiased;
+}
+
+button,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
 }
 
 .wrap{
   width:100%;
-  max-width:520px;
+  max-width:540px;
   margin:0 auto;
 }
 
+/* HEADER */
+
 .header{
   text-align:center;
-  margin-bottom:24px;
-  padding-top:8px;
+  padding:12px 0 25px;
 }
 
 .logo-row{
@@ -62,92 +76,100 @@ body{
 }
 
 .logo-icon{
-  width:38px;
-  height:38px;
+  width:36px;
+  height:36px;
   border-radius:11px;
-  background:linear-gradient(135deg,#7C3AED,#F472B6);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
+  background:linear-gradient(135deg,#7c3aed,#ec4899);
   box-shadow:0 8px 30px rgba(124,58,237,.22);
+  font-size:17px;
 }
 
 .logo-text{
-  font-size:23px;
+  font-size:22px;
   font-weight:700;
-  letter-spacing:-.5px;
-  background:linear-gradient(90deg,#fff 25%,#9D5EFF);
+  letter-spacing:-.03em;
+  background:linear-gradient(90deg,#fff,#b78aff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
 .tagline{
   color:var(--muted);
-  font-size:13px;
+  font-size:12px;
+  letter-spacing:.01em;
 }
 
+/* MAIN CARD */
+
 .card{
-  background:var(--card);
+  background:rgba(17,17,27,.94);
   border:1px solid var(--border);
   border-radius:18px;
   padding:18px;
   margin-bottom:14px;
+  box-shadow:0 15px 50px rgba(0,0,0,.18);
 }
 
 .lbl{
   display:block;
+  margin-bottom:9px;
+  color:#66667d;
   font-size:10px;
   font-weight:700;
-  color:var(--dim);
   letter-spacing:.09em;
   text-transform:uppercase;
-  margin-bottom:9px;
 }
 
 textarea{
+  display:block;
   width:100%;
-  min-height:115px;
+  min-height:118px;
   resize:vertical;
-  border-radius:11px;
-  border:1px solid var(--border);
   background:var(--input);
+  border:1px solid var(--border);
+  border-radius:12px;
+  outline:none;
   color:var(--text);
-  padding:13px;
-  font-family:inherit;
+  padding:13px 14px;
   font-size:14px;
   line-height:1.6;
-  outline:none;
   transition:.2s ease;
 }
 
 textarea:focus{
-  border-color:var(--purple);
-  box-shadow:0 0 0 3px rgba(124,58,237,.10);
+  border-color:rgba(124,58,237,.8);
+  box-shadow:0 0 0 3px rgba(124,58,237,.08);
 }
 
 textarea::placeholder{
-  color:var(--dim);
+  color:#4b4b62;
 }
 
-.row{
-  display:flex;
+/* CONTROLS */
+
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:9px;
-  margin-top:11px;
-  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.control{
+  min-width:0;
 }
 
 select{
-  flex:1;
-  min-width:140px;
+  width:100%;
   background:var(--input);
-  color:var(--text);
   border:1px solid var(--border);
-  border-radius:10px;
+  color:var(--text);
   padding:10px 11px;
-  font-family:inherit;
-  font-size:13px;
+  border-radius:10px;
   outline:none;
+  font-size:12px;
   cursor:pointer;
 }
 
@@ -155,74 +177,92 @@ select:focus{
   border-color:var(--purple);
 }
 
-.btn{
+.generate{
   width:100%;
-  margin-top:12px;
-  padding:13px;
+  min-height:46px;
+  margin-top:11px;
   border:0;
-  border-radius:11px;
-  background:var(--purple);
+  border-radius:12px;
+  background:linear-gradient(135deg,#7c3aed,#6d28d9);
   color:#fff;
-  font-family:inherit;
-  font-size:15px;
+  font-size:14px;
   font-weight:600;
   cursor:pointer;
-  transition:.2s ease;
-  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 8px 25px rgba(124,58,237,.18);
+  transition:transform .15s ease,filter .15s ease,opacity .15s ease;
 }
 
-.btn:hover{
-  background:#6D28D9;
+.generate:hover{
+  filter:brightness(1.08);
   transform:translateY(-1px);
 }
 
-.btn:active{
+.generate:active{
   transform:translateY(0);
 }
 
-.btn:disabled{
-  opacity:.6;
+.generate:disabled{
+  opacity:.58;
   cursor:not-allowed;
   transform:none;
 }
 
-.err{
-  display:none;
-  color:#FCA5A5;
-  background:rgba(239,68,68,.08);
-  border:1px solid rgba(239,68,68,.2);
-  border-radius:9px;
-  padding:10px 12px;
-  margin-top:10px;
-  font-size:12px;
-  line-height:1.5;
+/* STATUS */
+
+.status{
+  min-height:18px;
+  margin-top:8px;
   text-align:center;
+  color:var(--danger);
+  font-size:12px;
+  line-height:1.4;
+}
+
+/* RESULTS */
+
+.results-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:4px 2px 9px;
+}
+
+.results-title{
+  color:#73738c;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.results-hint{
+  color:#4e4e64;
+  font-size:10px;
 }
 
 .reply{
   position:relative;
-  background:var(--card);
+  background:rgba(17,17,27,.94);
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:13px;
   padding:14px 15px;
-  margin-bottom:10px;
-  cursor:pointer;
-  transition:.2s ease;
-  -webkit-tap-highlight-color:transparent;
+  margin-bottom:9px;
+  transition:border-color .18s ease,transform .18s ease,background .18s ease;
 }
 
 .reply:hover{
-  border-color:#55428C;
-  transform:translateX(2px);
+  border-color:var(--border-hover);
+  transform:translateY(-1px);
 }
 
 .reply.best{
-  border-color:rgba(124,58,237,.65);
-  background:linear-gradient(
-    135deg,
-    rgba(124,58,237,.10),
-    rgba(18,18,31,1)
-  );
+  border-color:rgba(124,58,237,.48);
+  background:
+    linear-gradient(120deg,rgba(124,58,237,.08),rgba(17,17,27,.96));
 }
 
 .reply-top{
@@ -233,67 +273,81 @@ select:focus{
 }
 
 .badge{
-  font-size:10px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  padding:3px 9px;
+  display:inline-flex;
+  align-items:center;
   border-radius:20px;
+  padding:3px 8px;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
 }
 
-.badge.best-badge{
-  color:#BDA5FF;
-  background:rgba(124,58,237,.18);
+.badge.best{
+  color:#b58cff;
+  background:rgba(124,58,237,.16);
 }
 
-.badge.alt-badge{
-  color:var(--muted);
-  background:rgba(255,255,255,.05);
+.badge.alt{
+  color:#74748c;
+  background:rgba(255,255,255,.045);
 }
 
-.cpbtn{
+.copy{
   border:0;
   background:transparent;
-  color:var(--muted);
-  font-family:inherit;
-  font-size:12px;
+  color:#77778e;
   cursor:pointer;
-  padding:4px 7px;
-  border-radius:6px;
+  padding:3px 0 3px 10px;
+  font-size:11px;
 }
 
-.cpbtn:hover{
-  background:rgba(255,255,255,.05);
-  color:#fff;
+.copy:hover{
+  color:#b0aec5;
 }
 
 .reply-text{
+  color:#f0eef9;
   font-size:15px;
-  font-weight:500;
   line-height:1.55;
-  color:var(--text);
+  font-weight:500;
   word-break:break-word;
 }
 
+/* EMPTY */
+
 .empty{
+  border:1px dashed #242438;
+  border-radius:14px;
+  padding:38px 18px;
   text-align:center;
-  padding:40px 16px;
-  color:var(--dim);
-  font-size:13px;
+  color:#4b4b62;
+  font-size:12px;
   line-height:1.8;
 }
 
+.empty-icon{
+  font-size:22px;
+  opacity:.65;
+  margin-bottom:7px;
+}
+
+/* LOADING */
+
 .loading{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:20px;
   text-align:center;
-  padding:35px 16px;
-  color:var(--muted);
-  font-size:13px;
+  color:#66667d;
+  font-size:12px;
 }
 
 .dots{
   display:inline-flex;
-  align-items:center;
   gap:5px;
+  align-items:center;
+  margin-bottom:7px;
 }
 
 .dot{
@@ -301,7 +355,7 @@ select:focus{
   height:6px;
   border-radius:50%;
   background:#fff;
-  animation:pulse 1.1s ease-in-out infinite;
+  animation:dotPulse 1.05s ease-in-out infinite;
 }
 
 .dot:nth-child(2){
@@ -312,36 +366,39 @@ select:focus{
   animation-delay:.3s;
 }
 
-@keyframes pulse{
+@keyframes dotPulse{
   0%,100%{
-    opacity:.25;
+    opacity:.2;
     transform:scale(.7);
   }
-
   50%{
     opacity:1;
     transform:scale(1);
   }
 }
 
-@media(max-width:420px){
+/* MOBILE */
 
+@media(max-width:430px){
   body{
-    padding:18px 12px 45px;
+    padding:17px 12px 50px;
   }
 
   .card{
-    padding:14px;
+    padding:15px;
   }
 
-  .row{
-    flex-direction:column;
+  .controls{
+    grid-template-columns:1fr;
   }
 
-  select{
-    width:100%;
+  textarea{
+    min-height:125px;
   }
 
+  .reply-text{
+    font-size:14px;
+  }
 }
 </style>
 </head>
@@ -350,596 +407,598 @@ select:focus{
 
 <div class="wrap">
 
-  <div class="header">
-
+  <header class="header">
     <div class="logo-row">
       <div class="logo-icon">💬</div>
       <div class="logo-text">RizzAI</div>
     </div>
 
     <div class="tagline">
-      paste the message. get the reply. send it.
+      paste the message. understand the vibe. get the reply.
     </div>
+  </header>
 
-  </div>
+  <main>
 
+    <section class="card">
 
-  <div class="card">
+      <label class="lbl" for="msgInput">
+        Their message / situation
+      </label>
 
-    <label class="lbl" for="msgInput">
-      Their message / situation
-    </label>
+      <textarea
+        id="msgInput"
+        autocomplete="off"
+        spellcheck="true"
+        placeholder="paste what they said or tell me the situation...
 
-    <textarea
-      id="msgInput"
-      placeholder='paste their message or describe the situation...
+e.g. she said she's been busy lately
+e.g. uska 'wyd' aya
+e.g. unknown girl sent 'hey'
+e.g. she's taking forever to reply, kya bolu?"
+      ></textarea>
 
-e.g. "unknown ladki ka hey aya hai"
-e.g. "she said haha okay, baat dry ho rahi hai"
-e.g. "hinge prompt: key to my heart is maggie and tea"'
-    ></textarea>
+      <div class="controls">
 
+        <div class="control">
+          <label class="lbl" for="tone">Tone</label>
+          <select id="tone">
+            <option value="chill">chill</option>
+            <option value="flirty">subtle flirty</option>
+            <option value="funny">funny</option>
+            <option value="cute">cute</option>
+            <option value="savage">teasing / savage</option>
+            <option value="direct">smooth / direct</option>
+          </select>
+        </div>
 
-    <div class="row">
+        <div class="control">
+          <label class="lbl" for="ctx">Context</label>
+          <select id="ctx">
+            <option value="unknown">unknown person</option>
+            <option value="crush">crush</option>
+            <option value="friend">friend</option>
+            <option value="early">just started talking</option>
+            <option value="ongoing">been talking a while</option>
+            <option value="gap">restarting after a gap</option>
+            <option value="dry">conversation is dry</option>
+            <option value="hinge">hinge / dating app</option>
+          </select>
+        </div>
 
-      <select id="tone">
+      </div>
 
-        <option value="chill">😌 Chill</option>
-        <option value="flirty">✨ Flirty</option>
-        <option value="funny">😭 Funny</option>
-        <option value="cute">🤍 Cute</option>
-        <option value="savage">🫠 Savage</option>
+      <button class="generate" id="genBtn" type="button">
+        <span>⚡</span>
+        <span id="btnText">Generate</span>
+      </button>
 
-      </select>
+      <div class="status" id="status" aria-live="polite"></div>
 
+    </section>
 
-      <select id="ctx">
+    <section id="results">
 
-        <option value="unknown">Unknown person</option>
-        <option value="crush">Crush</option>
-        <option value="friend">Friend</option>
-        <option value="early">Just started talking</option>
-        <option value="ongoing">Been talking a while</option>
-        <option value="gap">Gap restart</option>
-        <option value="dry">Dry conversation</option>
-        <option value="hinge">Hinge / Dating app</option>
+      <div class="empty">
+        <div class="empty-icon">💬</div>
+        paste their message above<br>
+        hit generate — 3 replies will show here<br>
+        click any reply to copy
+      </div>
 
-      </select>
+    </section>
 
-    </div>
-
-
-    <button
-      class="btn"
-      id="genBtn"
-      type="button"
-    >
-      ⚡ Generate
-    </button>
-
-
-    <div
-      class="err"
-      id="err"
-      role="alert"
-    ></div>
-
-  </div>
-
-
-  <div id="results">
-
-    <div class="empty">
-      💬
-      <br><br>
-      paste their message above
-      <br>
-      hit generate — 3 options aayenge
-      <br>
-      click any to copy
-    </div>
-
-  </div>
+  </main>
 
 </div>
 
-
 <script>
+"use strict";
+
+/*
+  RizzAI FRONTEND
+
+  IMPORTANT:
+  - No Groq API key lives in this file.
+  - The browser talks only to your Vercel backend.
+  - Your backend (/api/generate) is responsible for Groq.
+*/
+
+const API_ENDPOINT = "/api/generate";
 
 const TONES = {
-
   chill:
-    "chill, low effort, relaxed, effortless, natural",
+    "chill, effortless, low-pressure, natural",
 
   flirty:
-    "subtle flirty, playful, light tension, confident, never desperate",
+    "subtle flirty, playful tension, confident but not desperate",
 
   funny:
-    "actually witty or amusing when appropriate, natural, not try-hard",
+    "actually witty and naturally funny, not try-hard",
 
   cute:
-    "warm, genuine, charming, lightly playful, not childish",
+    "warm, genuine, slightly playful, natural",
 
   savage:
-    "confident, slightly teasing, sharp but not rude or cruel"
+    "light teasing, confident, playful, never mean",
 
+  direct:
+    "smooth, direct, confident, conversational, no pickup-line energy"
 };
 
-
-const CTXS = {
-
+const CONTEXTS = {
   unknown:
-    "complete stranger or new contact, first contact, do not assume attraction or chemistry",
+    "complete stranger / first contact; do not assume chemistry",
 
   crush:
-    "crush, some familiarity may exist, keep flirting calibrated",
+    "crush; some familiarity or interest exists",
 
   friend:
-    "friend, casual and comfortable conversation",
+    "friend; comfortable casual conversation",
 
   early:
-    "new conversation, only talked a little, low to moderate familiarity",
+    "just started talking; still building familiarity",
 
   ongoing:
-    "already talking for some time, use context naturally",
+    "they have been talking for a while; existing conversational context",
 
   gap:
-    "reconnecting after a gap, acknowledge naturally without sounding needy",
+    "restarting conversation after a gap; acknowledge naturally if relevant",
 
   dry:
-    "conversation is losing momentum or getting dry, create a natural new hook",
+    "conversation is becoming dry; revive it without sounding desperate",
 
   hinge:
-    "dating app context, use the specific profile or prompt detail naturally"
-
+    "Hinge or dating app conversation; use profile/message specifics naturally"
 };
 
+const $ = id => document.getElementById(id);
 
-const msgInput = document.getElementById("msgInput");
-const toneSelect = document.getElementById("tone");
-const ctxSelect = document.getElementById("ctx");
-const generateButton = document.getElementById("genBtn");
-const results = document.getElementById("results");
-const errorBox = document.getElementById("err");
+const msgInput = $("msgInput");
+const toneInput = $("tone");
+const ctxInput = $("ctx");
+const genBtn = $("genBtn");
+const btnText = $("btnText");
+const statusBox = $("status");
+const results = $("results");
 
+let generating = false;
 
-generateButton.addEventListener("click", generate);
 
+/* ---------------------------
+   BASIC UI HELPERS
+---------------------------- */
 
-msgInput.addEventListener("keydown", function(event){
-
-  if(
-    (event.ctrlKey || event.metaKey) &&
-    event.key === "Enter"
-  ){
-    generate();
-  }
-
-});
-
-
-async function generate(){
-
-  const msg = msgInput.value.trim();
-
-
-  if(!msg){
-
-    showError(
-      "kuch message ya situation type karo"
-    );
-
-    msgInput.focus();
-
-    return;
-
-  }
-
-
-  clearError();
-
-  setLoading(true);
-
-
-  try{
-
-    const response = await fetch("/api/generate", {
-
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-
-        msg: msg,
-
-        tone: TONES[toneSelect.value],
-
-        ctx: CTXS[ctxSelect.value]
-
-      })
-
-    });
-
-
-    let data;
-
-
-    try{
-
-      data = await response.json();
-
-    }catch(parseError){
-
-      throw new Error(
-        "server ne valid response nahi diya. backend deployment check karo."
-      );
-
-    }
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data?.error ||
-        `server error (${response.status})`
-      );
-
-    }
-
-
-    if(
-      !data ||
-      !Array.isArray(data.replies)
-    ){
-
-      throw new Error(
-        "server response format invalid hai"
-      );
-
-    }
-
-
-    const cleanedReplies = data.replies
-      .map(cleanReply)
-      .filter(Boolean)
-      .slice(0, 3);
-
-
-    if(cleanedReplies.length === 0){
-
-      throw new Error(
-        "replies generate nahi hui. ek baar retry karo."
-      );
-
-    }
-
-
-    renderReplies(cleanedReplies);
-
-
-  }catch(error){
-
-    console.error("Generate error:", error);
-
-
-    const message =
-      error?.message ||
-      "kuch galat hua. retry karo.";
-
-
-    if(
-      error instanceof TypeError &&
-      /fetch/i.test(message)
-    ){
-
-      showError(
-        "server se connection nahi ho pa raha. deployment aur /api/generate check karo."
-      );
-
-    }else{
-
-      showError(message);
-
-    }
-
-
-    results.innerHTML = `
-      <div class="empty">
-        💬
-        <br><br>
-        reply generate nahi hua
-        <br>
-        neeche wala error check karo
-      </div>
-    `;
-
-  }finally{
-
-    setLoading(false);
-
-  }
-
+function setStatus(message = "") {
+  statusBox.textContent = message;
 }
 
-
-function cleanReply(text){
-
-  if(typeof text !== "string"){
-    return "";
-  }
-
-
-  return text
-
-    .trim()
-
-    .replace(
-      /^(option\s*\d+\s*[:.\-]?\s*|\d+\s*[.)\-:]\s*)/i,
-      ""
-    )
-
-    .replace(/^["'`]+|["'`]+$/g,"")
-
-    .trim();
-
-}
-
-
-function renderReplies(replies){
-
-  const labels = [
-    "✦ Best",
-    "Alt 1",
-    "Alt 2"
-  ];
-
-
-  results.innerHTML = "";
-
-
-  replies.forEach(function(text,index){
-
-    const card = document.createElement("div");
-
-    card.className =
-      "reply" +
-      (index === 0 ? " best" : "");
-
-
-    const top = document.createElement("div");
-
-    top.className = "reply-top";
-
-
-    const badge = document.createElement("span");
-
-    badge.className =
-      "badge " +
-      (index === 0
-        ? "best-badge"
-        : "alt-badge"
-      );
-
-    badge.textContent =
-      labels[index] ||
-      `Alt ${index}`;
-
-
-    const copyButton =
-      document.createElement("button");
-
-    copyButton.className = "cpbtn";
-
-    copyButton.type = "button";
-
-    copyButton.textContent = "Copy";
-
-
-    const replyText =
-      document.createElement("div");
-
-    replyText.className = "reply-text";
-
-    replyText.textContent = text;
-
-
-    top.appendChild(badge);
-
-    top.appendChild(copyButton);
-
-
-    card.appendChild(top);
-
-    card.appendChild(replyText);
-
-
-    card.addEventListener(
-      "click",
-      function(){
-
-        copyReply(text, card);
-
-      }
-    );
-
-
-    copyButton.addEventListener(
-      "click",
-      function(event){
-
-        event.stopPropagation();
-
-        copyReply(text, card);
-
-      }
-    );
-
-
-    results.appendChild(card);
-
-  });
-
-}
-
-
-async function copyReply(text,card){
-
-  try{
-
-    if(
-      navigator.clipboard &&
-      window.isSecureContext
-    ){
-
-      await navigator.clipboard.writeText(text);
-
-    }else{
-
-      fallbackCopy(text);
-
-    }
-
-
-    const button =
-      card.querySelector(".cpbtn");
-
-
-    if(button){
-
-      const oldText =
-        button.textContent;
-
-      button.textContent =
-        "✓ Copied";
-
-
-      setTimeout(function(){
-
-        button.textContent =
-          oldText;
-
-      },1400);
-
-    }
-
-
-    const oldBorder =
-      card.style.borderColor;
-
-
-    card.style.borderColor =
-      "#10B981";
-
-
-    setTimeout(function(){
-
-      card.style.borderColor =
-        oldBorder;
-
-    },1400);
-
-
-  }catch(error){
-
-    console.error(
-      "Copy failed:",
-      error
-    );
-
-  }
-
-}
-
-
-function fallbackCopy(text){
-
-  const textarea =
-    document.createElement("textarea");
-
-
-  textarea.value = text;
-
-
-  textarea.style.position = "fixed";
-
-  textarea.style.opacity = "0";
-
-
-  document.body.appendChild(textarea);
-
-
-  textarea.focus();
-
-  textarea.select();
-
-
-  document.execCommand("copy");
-
-
-  document.body.removeChild(textarea);
-
-}
-
-
-function setLoading(isLoading){
-
-  generateButton.disabled =
-    isLoading;
-
-
-  if(isLoading){
-
-    generateButton.innerHTML = `
+function setLoading(isLoading) {
+  generating = isLoading;
+  genBtn.disabled = isLoading;
+
+  if (isLoading) {
+    btnText.innerHTML = `
       <span class="dots">
         <span class="dot"></span>
         <span class="dot"></span>
-        <span class="dot"></span>
       </span>
+      thinking
     `;
+  } else {
+    btnText.textContent = "Generate";
+  }
+}
 
+function showLoading() {
+  results.innerHTML = `
+    <div class="loading">
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div>reading the vibe...</div>
+    </div>
+  `;
+}
+
+
+/* ---------------------------
+   SAFE HTML
+---------------------------- */
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ---------------------------
+   REPLY NORMALIZATION
+
+   Backend already cleans output,
+   but frontend also protects itself
+   against accidental formatting.
+---------------------------- */
+
+function normalizeReply(value) {
+  let text = String(value ?? "").trim();
+
+  text = text
+    .replace(/^["'`]+|["'`]+$/g, "")
+    .replace(
+      /^(?:option|reply|response)\s*\d+\s*[:.)-]\s*/i,
+      ""
+    )
+    .replace(/^\d+\s*[:.)-]\s*/, "")
+    .replace(/^[-•*]\s*/, "")
+    .trim();
+
+  return text;
+}
+
+function normalizeReplies(replies) {
+  if (!Array.isArray(replies)) return [];
+
+  const unique = [];
+
+  for (const item of replies) {
+    const text = normalizeReply(item);
+
+    if (!text) continue;
+
+    const duplicate = unique.some(
+      existing =>
+        existing.toLowerCase() === text.toLowerCase()
+    );
+
+    if (!duplicate) {
+      unique.push(text);
+    }
+  }
+
+  return unique.slice(0, 3);
+}
+
+
+/* ---------------------------
+   RENDER
+---------------------------- */
+
+function renderReplies(replies) {
+  const safeReplies = normalizeReplies(replies);
+
+  if (safeReplies.length < 3) {
+    results.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🫠</div>
+        couldn't get three usable replies<br>
+        try generating again
+      </div>
+    `;
+    return;
+  }
+
+  const labels = [
+    ["✦ Best", "best"],
+    ["Alt 1", "alt"],
+    ["Alt 2", "alt"]
+  ];
+
+  results.innerHTML = `
+    <div class="results-header">
+      <span class="results-title">your replies</span>
+      <span class="results-hint">tap to copy</span>
+    </div>
+
+    ${safeReplies.map((text, index) => `
+      <article class="reply ${index === 0 ? "best" : ""}" data-index="${index}">
+
+        <div class="reply-top">
+          <span class="badge ${labels[index][1]}">
+            ${labels[index][0]}
+          </span>
+
+          <button
+            class="copy"
+            type="button"
+            data-copy="${escapeHTML(text)}"
+          >
+            Copy
+          </button>
+        </div>
+
+        <div class="reply-text">
+          ${escapeHTML(text)}
+        </div>
+
+      </article>
+    `).join("")}
+  `;
+
+  /*
+    Event listeners are attached after rendering.
+    This avoids inline onclick handlers and quote-breaking
+    when a generated reply contains apostrophes.
+  */
+
+  document.querySelectorAll(".reply").forEach(card => {
+    card.addEventListener("click", async event => {
+
+      if (event.target.closest(".copy")) return;
+
+      await copyReply(
+        card.querySelector(".reply-text").textContent,
+        card
+      );
+    });
+  });
+
+  document.querySelectorAll(".copy").forEach(button => {
+    button.addEventListener("click", async event => {
+      event.stopPropagation();
+
+      const card = button.closest(".reply");
+      const text = card.querySelector(".reply-text").textContent;
+
+      await copyReply(text, card);
+    });
+  });
+}
+
+
+/* ---------------------------
+   COPY
+---------------------------- */
+
+async function copyReply(text, card) {
+  try {
+
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const area = document.createElement("textarea");
+
+      area.value = text;
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+
+      document.execCommand("copy");
+      area.remove();
+    }
+
+    const copyButton = card.querySelector(".copy");
+
+    if (copyButton) {
+      const original = copyButton.textContent;
+
+      copyButton.textContent = "✓ Copied";
+
+      setTimeout(() => {
+        copyButton.textContent = original;
+      }, 1400);
+    }
+
+    card.style.borderColor = "rgba(16,185,129,.65)";
+
+    setTimeout(() => {
+      card.style.borderColor = "";
+    }, 1400);
+
+  } catch (error) {
+    console.error("Copy failed:", error);
+  }
+}
+
+
+/* ---------------------------
+   RESPONSE ERROR HANDLING
+
+   Converts backend errors into
+   useful user-facing messages.
+---------------------------- */
+
+async function readServerResponse(response) {
+
+  const contentType =
+    response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+
+    try {
+      return await response.json();
+    } catch {
+      return {};
+    }
+  }
+
+  const text = await response.text();
+
+  return {
+    error: text || "Server returned an invalid response."
+  };
+}
+
+
+/* ---------------------------
+   GENERATE
+---------------------------- */
+
+async function generate() {
+
+  if (generating) return;
+
+  const msg = msgInput.value.trim();
+
+  if (!msg) {
+    setStatus("paste their message first");
+    msgInput.focus();
+    return;
+  }
+
+  if (msg.length > 12000) {
+    setStatus("that's a lot 😭 keep the chat under 12,000 characters");
+    return;
+  }
+
+  setStatus("");
+  setLoading(true);
+  showLoading();
+
+  const toneKey = toneInput.value;
+  const ctxKey = ctxInput.value;
+
+  const payload = {
+    msg,
+    tone: TONES[toneKey] || TONES.chill,
+    ctx: CONTEXTS[ctxKey] || CONTEXTS.unknown
+  };
+
+  try {
+
+    const response = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await readServerResponse(response);
+
+    if (!response.ok) {
+
+      console.error("RizzAI backend error:", {
+        status: response.status,
+        data
+      });
+
+      /*
+        Keep provider/server details out of the UI.
+        Those details remain in Vercel logs.
+      */
+
+      if (response.status === 429) {
+        throw new Error(
+          "AI is busy right now — give it a second and retry."
+        );
+      }
+
+      if (response.status >= 500) {
+        throw new Error(
+          "RizzAI couldn't generate a reply right now. Try again."
+        );
+      }
+
+      throw new Error(
+        data?.error || "Something went wrong. Try again."
+      );
+    }
+
+    const replies = normalizeReplies(data?.replies);
+
+    if (replies.length !== 3) {
+      console.error("Invalid RizzAI response:", data);
+
+      throw new Error(
+        "RizzAI returned an incomplete response. Try again."
+      );
+    }
+
+    renderReplies(replies);
+
+  } catch (error) {
+
+    console.error("Generate error:", error);
 
     results.innerHTML = `
-      <div class="loading">
-        thinking of something actually worth sending...
+      <div class="empty">
+        <div class="empty-icon">🫠</div>
+        couldn't generate right now<br>
+        check your connection and try again
       </div>
     `;
 
-  }else{
+    setStatus(
+      error?.message ||
+      "RizzAI couldn't generate a reply right now."
+    );
 
-    generateButton.textContent =
-      "⚡ Generate";
+  } finally {
 
+    setLoading(false);
   }
-
 }
 
 
-function showError(message){
+/* ---------------------------
+   EVENTS
+---------------------------- */
 
-  errorBox.textContent =
-    message;
+genBtn.addEventListener("click", generate);
+
+msgInput.addEventListener("keydown", event => {
+
+  /*
+    Ctrl + Enter / Cmd + Enter = generate
+    Normal Enter remains normal textarea behavior.
+  */
+
+  if (
+    event.key === "Enter" &&
+    (event.ctrlKey || event.metaKey)
+  ) {
+    event.preventDefault();
+    generate();
+  }
+});
 
 
-  errorBox.style.display =
-    "block";
+/*
+  Clear stale error when the user starts typing.
+*/
 
-}
+msgInput.addEventListener("input", () => {
+  if (statusBox.textContent) {
+    setStatus("");
+  }
+});
 
 
-function clearError(){
+/*
+  Prevent accidental double submission while
+  browser is waiting for the backend.
+*/
 
-  errorBox.textContent =
-    "";
+window.addEventListener("beforeunload", event => {
+  if (!generating) return;
+
+  /*
+    We intentionally do not block navigation.
+    This simply exists as a safe state hook.
+  */
+});
 
 
-  errorBox.style.display =
-    "none";
+/* ---------------------------
+   OPTIONAL HEALTH CHECK
 
-}
+   No API request is made here.
+   The backend is contacted only when
+   the user actually presses Generate.
+---------------------------- */
 
+console.log("RizzAI frontend ready.");
 </script>
 
 </body>
