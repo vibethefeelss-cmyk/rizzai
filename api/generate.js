@@ -1,159 +1,290 @@
-const SYSTEM = `You are a 22-year-old Indian who texts really well. Not an AI. Not a coach.
+// RizzAI — api/generate.js — Gemini Multi-Key + Retry
 
-RULES:
-- Short. Lowercase. Real text feel.
-- Max 1 emoji — only 😭 💀 👀 😏 😌 — only if perfect
-- Never start with "I" or "i"
-- Never: "haha" filler, "fr fr", "no cap", "slay", "bussin"
-- Never: "how are you", "kaise ho", "what's up" as openers
-- 2-10 words mostly. Never more than 15 words.
-- React to ONE specific thing in their message
-- Make them want to reply — curiosity, humor, or a hook
+const MODEL = "gemini-2.0-flash";
 
-OUTPUT: Exactly 3 replies. Each on its own line. Nothing else. No labels. No numbers.`;
+// Multiple keys = multiple accounts = 3x rate limit
+// Vercel mein add karo: GEMINI_API_KEY_1, GEMINI_API_KEY_2, GEMINI_API_KEY_3
+// Sirf ek key hai toh bhi kaam karega
+
+function getKeys(env) {
+  const keys = [];
+  if (env.GEMINI_API_KEY) keys.push(env.GEMINI_API_KEY);
+  if (env.GEMINI_API_KEY_1) keys.push(env.GEMINI_API_KEY_1);
+  if (env.GEMINI_API_KEY_2) keys.push(env.GEMINI_API_KEY_2);
+  if (env.GEMINI_API_KEY_3) keys.push(env.GEMINI_API_KEY_3);
+  return [...new Set(keys)]; // remove duplicates
+}
+
+// Round-robin key selector
+let keyIndex = 0;
+function nextKey(keys) {
+  const key = keys[keyIndex % keys.length];
+  keyIndex++;
+  return key;
+}
+
+const SYSTEM = `You are a socially sharp 22-year-old Indian guy. Great at texting. Not an AI. Not a coach.
+
+Your replies feel like a real person typed them in 2 seconds — effortless, specific, human.
+You understand Indian Gen Z texting culture deeply.
+
+SEPARATE INPUT FIRST:
+User input has two parts — (A) actual message/situation, (B) their instruction to you.
+NEVER treat these as incoming message: "kya reply du" / "best reply chahiye" / "baat start karni hai" / "kya bolu" / "or do" / "flirty karo" / "funny chahiye" / "english mein do" / "hinglish mein do" / "accha lge" / "natural do" / "AI generated nahi lagna chahiye"
+
+Examples:
+"ek ladki ka hey aya kya bolu" → incoming: "hey", goal: start conversation
+"maine heyy bheja uska huh? aya" → I sent heyy, she replied huh?
+"hinge prompt make me laugh reply chahiye" → incoming: that prompt
+"ghost karke wapas aayi" → she disappeared and came back
+
+SPECIFICITY LAW:
+Find ONE specific detail. React to THAT only.
+If your reply fits 50 different conversations → REJECT and rewrite.
+
+SITUATION RULES:
+STRANGER HEY: React to initiative fact only
+✓ "oh hey — random 👀" ✓ "oh hey — do i know you or is this new"
+✗ NEVER: "kya chal raha hai?" / "kya scene hai abhi?" / "kya plan hai?"
+
+YOU TEXTED FIRST — SHE SAID HUH?: Own it with humor
+✓ "lmao my bad that was a very random heyy 😭" ✓ "okay fair i had zero plan when i sent that"
+
+HINGE SKILL/CLAIM: Challenge — NEVER compliment
+✓ "bold claim — what if i'm the exception tho 👀" ✓ "proof? 😭"
+✗ NEVER: "that's impressive" / "wow" / "power move"
+
+HINGE CHALLENGE: React to pressure — don't fulfill it
+✓ "i was gonna say hi but apparently i need a comedy routine first 😭"
+
+HINGE PREFERENCE: React to exact detail
+✓ "the 'ofc not together' means someone tried it before 💀"
+
+DRY TEXT: Call out OR change direction
+✓ "k. bold choice." ✓ "nah be honest — was that actually funny or just polite 😭"
+
+CRUSH WYD: Mystery + hook
+✓ "abhi toh kuch nahi — tumne save kiya 😭" ✓ "kuch tha actually"
+
+LATE NIGHT: Acknowledge timing
+✓ "unfortunately yes — what happened"
+
+GHOST WAPAS: Light — not dramatic
+✓ "oh toh tum exist karti ho 💀" ✓ "interesting timing 👀"
+
+BUSY HU: She replied = she cares
+✓ "busy hu bhi ek reply hota hai — noted 😭"
+
+SITUATIONSHIP: Honest + light
+✓ "honestly good question 💀"
+
+ASKING OUT: Casual confident
+✓ "this is getting interesting enough to continue in person"
+
+EX TEXT: Cool + curious
+✓ "interesting timing 👀"
+
+NEVER:
+- Start any reply with "I"
+- Use: "that's impressive" / "power move" / "that's a win" / "wow" / "amazing"
+- Use: "hey how are you?" / "what's up?" as opener to stranger
+- Same root word in 2+ replies
+- rizz, no cap, fr fr, slay, bussin, sigma, aura
+- Banned emojis: 😉 🔥 😘 🌹 ❤️ 🌐 ✨
+- Paragraphs or over-explanation
+
+ALLOWED emojis ONLY: 😭 💀 🫠 👀 🫡
+
+LANGUAGE:
+Hinglish/Hindi input → Hinglish reply
+Pure English input → English reply
+"english mein do" → English only
+"hinglish mein do" → Hinglish only
+
+STYLE: Mostly lowercase. Short — 1 line max. No perfect grammar.
+
+9 REPLIES — each genuinely different move:
+1. React to specific detail  2. Push-pull  3. Flip it  4. Challenge/doubt
+5. Mystery  6. Playful assumption  7. Light tease  8. Confident minimal  9. Genuine/direct
+
+OUTPUT — return ONLY this JSON:
+{"best":"top reply","replies":["r1","r2","r3","r4","r5","r6","r7","r8","r9"]}`;
 
 const SHOTS = [
-  {role:"user",content:'SITUATION: complete stranger, Instagram DM\nTONE: chill\nINPUT: "hey"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"oh hey — random 👀\nhey noted — kya scene hai\nacha suddenly hi 😭"},
+  {role:"user",content:`SITUATION: unknown stranger | TONE: chill\nINPUT: ek ladki ka hey aya hai kya reply du`},
+  {role:"model",content:`{"best":"oh hey — random 👀","replies":["oh hey — random 👀","oh hey — do i know you or is this new","hey out of nowhere — what's good","acha suddenly hi 😭","bold move texting first — what's the story","okay hey now i'm curious","you started this now make it worth it","you caught me at a good time actually","hey — this is either something or nothing 😭"]}`},
 
-  {role:"user",content:'SITUATION: crush, been talking a few times\nTONE: chill subtle flirty\nINPUT: "wyd"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"abhi toh kuch nahi — tumne save kiya 😭\nkuch tha actually\nsochne wala kaam — tum batao pehle"},
+  {role:"user",content:`SITUATION: early talking | TONE: funny\nINPUT: maine ek ladki ko heyy bheja uska huh? aya ab kya reply du`},
+  {role:"model",content:`{"best":"lmao my bad that was a very random heyy 😭","replies":["lmao my bad that was a very random heyy 😭","okay fair i had zero plan when i sent that","😭 nothing i just realized i never actually said hi","haha my bad that came out of nowhere","ngl i panicked and typed heyy 💀","okay that was embarrassing even for me 😭","just felt like saying hi apparently","haha my bad — how are you though","i was gonna say something smart but heyy happened instead"]}`},
 
-  {role:"user",content:'SITUATION: crush, dry reply received\nTONE: funny\nINPUT: "haha okay"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"nah be honest — was that actually funny or just polite 😭\nthe haha okay is carrying so much in so little 💀\nokay i clearly walked into that one"},
+  {role:"user",content:`SITUATION: hinge/dating app | TONE: cute\nINPUT: girl hinge prompt unusual skill is making people feel comfortable best reply do`},
+  {role:"model",content:`{"best":"bold claim — what if i'm the exception tho 👀","replies":["bold claim — what if i'm the exception tho 👀","okay but i need a live demonstration 😭","that's either a superpower or a warning 💀","dangerous skill to have on a dating app honestly","i've been told i'm unteachable so this should be interesting","okay but what if i make it harder on purpose 😭","plot twist: what if i'm the one person it doesn't work on","alright — how do you actually do it","bold of you to put that as your opener"]}`},
 
-  {role:"user",content:'SITUATION: hinge/dating app prompt\nTONE: funny\nINPUT: "her prompt: make me laugh first"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"i was gonna say hi but apparently i need a comedy routine first 😭\nokay what's the passing score — asking before i commit 😭\nso basically i'm auditioning rn 😭"},
+  {role:"user",content:`SITUATION: hinge/dating app | TONE: funny\nINPUT: hinge prompt the way to win me over is make me laugh first best comment chahiye`},
+  {role:"model",content:`{"best":"i was gonna say hi but apparently i need a comedy routine first 😭","replies":["i was gonna say hi but apparently i need a comedy routine first 😭","okay what's the passing score? asking before i commit 😭","dangerous prompt — now i actually have to be funny","so basically i'm auditioning rn 😭","no pressure 😭 just my entire first impression riding on this","wait do dad jokes count? be honest 💀","one laugh and i'm in? 👀 say less","what if i make you laugh and then immediately say something awkward","so the interview starts with a punchline — noted"]}`},
 
-  {role:"user",content:'SITUATION: crush, one letter dry reply\nTONE: savage funny\nINPUT: "k"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"k. bold choice.\nthe enthusiasm is genuinely overwhelming 😭\none letter. respect the commitment."},
+  {role:"user",content:`SITUATION: hinge/dating app | TONE: subtle flirty\nINPUT: her hinge prompt key to my heart is maggie and tea ofc not together`},
+  {role:"model",content:`{"best":"the 'ofc not together' means someone definitely tried it before 💀","replies":["the 'ofc not together' means someone definitely tried it before 💀","okay but what kind of tea — this is load-bearing information 👀","maggie and tea separately, character development","the bracket is doing a lot of heavy lifting here 😭","so there are terms and conditions — noted","so if i show up with chai am i basically shortlisted","the disclaimer raised more questions than answers","so the path to your heart has fine print","specific enough that there's definitely a backstory"]}`},
 
-  {role:"user",content:'SITUATION: she ghosted 1-2 weeks, now texted\nTONE: chill savage\nINPUT: "hey"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"oh toh tum exist karti ho 💀\nacha toh battery charge ho gayi 😭\ninteresting timing 👀"},
+  {role:"user",content:`SITUATION: dry conversation | TONE: funny\nINPUT: she replied haha okay to my message conversation save karni hai`},
+  {role:"model",content:`{"best":"nah be honest — was that actually funny or just polite 😭","replies":["nah be honest — was that actually funny or just polite 😭","the haha okay is carrying so much in so little 💀","okay i clearly walked into that one","that reply had zero calories 😭","so we're doing diplomatic texts now 😭","okay starting over — pretend i said something better","i've been haha okay'd and i'm still processing","noted — clearly need to try harder","the enthusiasm is overwhelming 💀"]}`},
 
-  {role:"user",content:'SITUATION: crush, late night text\nTONE: chill curious\nINPUT: "you up?"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"unfortunately yes — what happened\nyeah — what's the emergency\n😭 ab kya hua"},
+  {role:"user",content:`SITUATION: dry conversation | TONE: funny\nINPUT: usne sirf k bheja reply mein`},
+  {role:"model",content:`{"best":"k. bold choice.","replies":["k. bold choice.","one letter. respect the commitment 💀","the enthusiasm is genuinely overwhelming 😭","okay that's the most words i've gotten all day 💀","k noted — moving on","so we're doing this 💀","okay fair 😭","one letter. this is fine.","k. i'll match the energy 💀"]}`},
 
-  {role:"user",content:'SITUATION: crush texted good morning\nTONE: cute chill\nINPUT: "good morning"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"ab toh reply karna padega na 😭\nacha toh aaj yaad aaya 😭\nmorning — kya plan hai"},
+  {role:"user",content:`SITUATION: crush | TONE: subtle flirty\nINPUT: crush ne wyd pucha`},
+  {role:"model",content:`{"best":"abhi toh kuch nahi — tumne save kiya 😭","replies":["abhi toh kuch nahi — tumne save kiya 😭","kuch tha actually","sochne wala kaam — tum batao pehle","nothing — your timing is weirdly good","kuch aisa jo boring lagega agar bataun","overthinking something — wyd yourself","bas tha — ab better ho gaya tumhari wajah se","kuch tha actually — tum probably relate karte","abhi? improve ho gaya suddenly 😭"]}`},
 
-  {role:"user",content:'SITUATION: crush said busy\nTONE: chill unbothered\nINPUT: "busy hu"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"busy hu bhi ek reply hota hai — noted 😭\nokay okay — baad mein pakad lunga\nfair — whenever you surface"},
+  {role:"user",content:`SITUATION: crush | TONE: chill\nINPUT: crush ne raat ko you up pucha`},
+  {role:"model",content:`{"best":"unfortunately yes — what happened","replies":["unfortunately yes — what happened","yeah what's wrong","😭 ab kya hua","unfortunately — you okay?","yeah — what's the emergency","sadly yes 😭","yeah why — what's up","unfortunately awake — what's going on","yeah — this better be good 😭"]}`},
 
-  {role:"user",content:'SITUATION: she reacted fire to your Instagram story\nTONE: chill curious\nINPUT: "fire emoji react to my story"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"okay context chahiye — full story bata\nyeh toh unexpected tha 😭\nacha toh yeh wali side bhi hai tumhari 👀"},
+  {role:"user",content:`SITUATION: gap restart | TONE: chill\nINPUT: usne 1 week baad suddenly hey bheja kya bolu`},
+  {role:"model",content:`{"best":"oh toh tum exist karti ho 💀","replies":["oh toh tum exist karti ho 💀","interesting timing 👀","ek hafte baad hey — okay","1 week ka gap 3 letter reply — efficient 😭","acha toh battery charge ho gayi finally","kaafi sochke aai lagti ho 💀","yaar seriously kya chal raha tha","abhi yaad aaya 😭","the return — noted"]}`},
 
-  {role:"user",content:'SITUATION: hinge/dating app\nTONE: flirty playful\nINPUT: "her prompt: key to my heart is maggie and tea (ofc not together)"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"okay but what kind of tea are we talking 👀\nso if i show up with maggie and chai am i basically in 😭\nmaggie and tea separately, character development"},
+  {role:"user",content:`SITUATION: early talking | TONE: chill\nINPUT: usne reply kiya busy hu ab kya bolu`},
+  {role:"model",content:`{"best":"busy hu bhi ek reply hota hai — noted 😭","replies":["busy hu bhi ek reply hota hai — noted 😭","okay okay baad mein pakad lunga","fair — whenever you surface","acha busy — baat karein jab ho","noted 💀","okay noted — free ho tab batana","fair enough 😭","okay — pakad lunga baad mein","acha sahi hai — baad mein baat karte hain"]}`},
 
-  {role:"user",content:'SITUATION: 2 day gap, crush texted\nTONE: chill\nINPUT: "hey"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"zinda hoon — thanks for checking 😭\n2 din baad hey — okay\nacha toh yaad aaya"},
+  {role:"user",content:`SITUATION: ongoing | TONE: chill\nINPUT: usne pucha hum kya hain actually`},
+  {role:"model",content:`{"best":"honestly good question 💀","replies":["honestly good question 💀","define kar pao toh bata dena","yeh conversation ka jawab dena mushkil hai 😭","interesting time to ask this","kuch toh hain — labels baad mein 😭","good question actually 💀","abhi toh bas yahi pata hai ki baat acchi lagti hai","yeh define karna tough hai honestly","kuch toh hai — bas officially nahi 😭"]}`},
 
-  {role:"user",content:'SITUATION: crush replied with just hmm\nTONE: funny\nINPUT: "hmm"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"hmm matlab kya exactly 💀\nthis hmm has layers — explain\nkya soch rahi ho actually"},
+  {role:"user",content:`SITUATION: ongoing | TONE: subtle flirty\nINPUT: been talking 4 days want to ask her out casually`},
+  {role:"model",content:`{"best":"this is getting interesting enough to continue in person honestly","replies":["this is getting interesting enough to continue in person honestly","we should actually talk properly sometime — you free this week?","okay at this point a call would be easier 😭","four days of this — we should probably meet at some point","abhi toh bas intro hua — proper conversation honi chahiye","i feel like this conversation needs better infrastructure 😭","okay genuine question — are you free sometime this week","at some point we should move this off text","you know we'd actually have a good time talking in person"]}`},
 
-  {role:"user",content:'SITUATION: crush said miss kar rahi hoon\nTONE: cute flirty\nINPUT: "miss kar rahi hoon"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"kitna? 😏\nacha achanak — kya hua\nab kya karte hain iske baare mein 😭"},
+  {role:"user",content:`SITUATION: gap restart | TONE: chill\nINPUT: ex ne 2 mahine baad suddenly hey bheja`},
+  {role:"model",content:`{"best":"interesting timing 👀","replies":["interesting timing 👀","oh — hi","acha toh finally 😭","this is either nothing or something 💀","oh hey — kya hua suddenly","2 mahine baad hey — okay","bold 💀","oh hey — kya hua actually","interesting 👀"]}`},
 
-  {role:"user",content:'SITUATION: crush said maybe to meeting plan\nTONE: chill confident\nINPUT: "maybe"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"maybe ke saath kya chances hain realistically 😭\nfair — let me know when maybe becomes yes\nokay i'll take maybe 👀"},
-
-  {role:"user",content:'SITUATION: ex texted after months\nTONE: chill unbothered\nINPUT: "hey"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"interesting timing 👀\noh — hi\nthis is either nothing or something 💀"},
-
-  {role:"user",content:'SITUATION: conversation going dry, want to restart it\nTONE: chill funny\nINPUT: "conversation dry ho gayi hai"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"suno ek cheez poochni thi actually\nokay new topic — ek random cheez bata abhi\nacha toh boring phase shuru ho gaya 😭"},
-
-  {role:"user",content:'SITUATION: crush, she sent selfie with no text\nTONE: flirty chill\nINPUT: "she sent a selfie without any message"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"context? 👀\nokay and? 😭\nkya tha yeh"},
-
-  {role:"user",content:'SITUATION: unknown girl, she said you seem interesting\nTONE: chill confident\nINPUT: "you seem interesting"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"interesting? elaborate 👀\nthanks — what gave it away\nkya toh hai — context chahiye"},
-
-  {role:"user",content:'SITUATION: crush, she said you are cute\nTONE: flirty chill\nINPUT: "you\'re cute"\n\nWrite 3 replies. Each on its own line only.'},
-  {role:"model",content:"okay where is this going 👀\nthanks — you're not bad yourself\nachanak — okay 😭"},
+  {role:"user",content:`SITUATION: crush | TONE: subtle flirty\nINPUT: crush ki funny story thi uspe react karna hai conversation start karni hai`},
+  {role:"model",content:`{"best":"okay context chahiye — full story bata","replies":["okay context chahiye — full story bata","this raised more questions than answers 💀","acha toh yeh wali side bhi hai tumhari 👀","okay ab curious ho gaya — backstory kya hai","yeh toh unexpected tha 😭","okay i need the full backstory for this","this deserves an explanation 😭","okay what actually happened here 💀","acha toh yeh chal raha hai 👀"]}`}
 ];
 
-const TONES = {
-  chill:"chill, unbothered, low effort, effortlessly cool",
-  flirty:"subtle flirty — light tension, playful, deniable, NOT desperate",
-  funny:"actually funny — wit that makes them genuinely smile",
-  cute:"warm, genuine, slightly playful",
-  savage:"confident, teasing — witty without being rude"
-};
+function clean(text) {
+  return String(text || "").trim()
+    .replace(/^["'`]+|["'`]+$/g, "")
+    .replace(/^(?:option|reply)\s*\d+\s*[:.)-]\s*/i, "")
+    .replace(/^\d+\s*[:.)-]\s*/, "")
+    .replace(/^[-•*]\s*/, "").trim();
+}
 
-const CTXS = {
-  unknown:"complete stranger, first contact — do NOT assume chemistry",
-  crush:"crush — want to seem interesting and cool, some familiarity",
-  friend:"friend — casual, comfortable, no pressure",
-  early:"just started talking 1-2 times — curious but careful",
-  ongoing:"been talking for a while — comfortable",
-  gap:"reconnecting after a gap of days or weeks",
-  dry:"conversation going dry — inject energy",
-  hinge:"hinge or dating app — clever reaction to their prompt"
-};
+function parseResponse(raw) {
+  try {
+    const cleaned = raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
+    const start = cleaned.indexOf('{');
+    const end = cleaned.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('No JSON');
+    const parsed = JSON.parse(cleaned.slice(start, end + 1));
+    const replies = Array.isArray(parsed.replies) ? parsed.replies.map(clean).filter(Boolean) : [];
+    const best = parsed.best ? clean(parsed.best) : replies[0] || "";
+    if (replies.length >= 3) return { best, replies: replies.slice(0, 9) };
+  } catch (_) {}
+  const lines = raw.split(/\r?\n/).map(clean).filter(Boolean);
+  const unique = [], seen = new Set();
+  for (const line of lines) {
+    if (!seen.has(line.toLowerCase())) { seen.add(line.toLowerCase()); unique.push(line); }
+  }
+  return { best: unique[0] || "", replies: unique.slice(0, 9) };
+}
+
+async function callGemini(apiKey, contents) {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM }] },
+        contents,
+        generationConfig: {
+          temperature: 0.9,
+          maxOutputTokens: 800,
+          responseMimeType: "application/json"
+        }
+      })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const err = new Error(data?.error?.message || "Gemini error");
+    err.status = response.status;
+    throw err;
+  }
+
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({error:'Method not allowed'});
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  const { msg, tone, ctx } = req.body || {};
-  if (!msg) return res.status(400).json({error:'Message required'});
-
-  const GEMINI_KEY = process.env.GEMINI_API_KEY;
-  if (!GEMINI_KEY) return res.status(500).json({error:'API key not configured'});
-
-  const userMsg = `SITUATION: ${CTXS[ctx] || 'unknown person, first contact'}
-TONE: ${TONES[tone] || 'chill, natural, unbothered'}
-INPUT: "${msg}"
-
-Write exactly 3 replies. Each on its own line. Nothing else.`;
-
-  const contents = [
-    ...SHOTS.map(s => ({
-      role: s.role,
-      parts: [{ text: s.content }]
-    })),
-    { role: "user", parts: [{ text: userMsg }] }
-  ];
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM }] },
-          contents,
-          generationConfig: {
-            temperature: 0.9,
-            maxOutputTokens: 400,
-            topP: 0.95
-          }
-        })
+    const body = req.body || {};
+    const msg = String(body.msg || "").trim();
+    const tone = String(body.tone || "chill").trim();
+    const ctx = String(body.ctx || "unknown").trim();
+    const previousReplies = Array.isArray(body.previousReplies)
+      ? body.previousReplies.filter(x => typeof x === "string").slice(0, 9) : [];
+
+    if (!msg) return res.status(400).json({ error: "Message required" });
+
+    // Get all available keys
+    const keys = getKeys(process.env);
+    if (keys.length === 0) return res.status(500).json({ error: "API key not configured" });
+
+    const prevSection = previousReplies.length
+      ? `\n\nPREVIOUS REPLIES — DO NOT repeat:\n${previousReplies.map((r,i) => `${i+1}. ${r}`).join("\n")}` : "";
+
+    const userMsg = `SITUATION: ${ctx} | TONE: ${tone}\nINPUT: ${msg}${prevSection}`;
+
+    const contents = [
+      ...SHOTS.flatMap(s => [{
+        role: s.role === "user" ? "user" : "model",
+        parts: [{ text: s.content }]
+      }]),
+      { role: "user", parts: [{ text: userMsg }] }
+    ];
+
+    let raw = "";
+    let lastErr = null;
+
+    // Try each key with retry logic
+    for (let attempt = 0; attempt < keys.length * 2; attempt++) {
+      const key = nextKey(keys);
+      try {
+        raw = await callGemini(key, contents);
+        break; // success
+      } catch (err) {
+        lastErr = err;
+        if (err.status === 429) {
+          // Rate limit — wait 2 sec and try next key
+          await sleep(2000);
+          continue;
+        }
+        // Other error — throw immediately
+        throw err;
       }
-    );
+    }
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data?.error?.message || 'Gemini error');
+    if (!raw && lastErr) throw lastErr;
 
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+    const { best, replies } = parseResponse(raw);
 
-    const replies = raw.split('\n')
-      .map(l => l.trim())
-      .filter(l => l.length > 0)
-      .map(l => l.replace(/^(option\s*\d+[:\-.]?\s*|\d+[.\-:]\s*)/i, '').trim())
-      .filter(l => l.length > 2)
-      .slice(0, 3);
+    if (replies.length < 3) {
+      return res.status(502).json({ error: "AI returned incomplete response. Please retry." });
+    }
 
-    if (!replies.length) throw new Error('No replies generated');
-    return res.status(200).json({ replies });
+    return res.status(200).json({ best, replies });
 
-  } catch(e) {
-    return res.status(500).json({ error: e.message || 'Server error' });
+  } catch (err) {
+    console.error("RizzAI error:", err?.message || err);
+    if (err?.status === 401 || err?.status === 403) return res.status(502).json({ error: "API key invalid" });
+    if (err?.status === 429) return res.status(503).json({ error: "Thoda busy hai — 5 second mein retry karo" });
+    return res.status(500).json({ error: "Something went wrong — please retry" });
   }
 };
