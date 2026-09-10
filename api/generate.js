@@ -84,6 +84,21 @@ ASKING OUT: Casual confident
 EX TEXT: Cool + curious
 ✓ "interesting timing 👀"
 
+FREE TIME / NO CLASSES / HOLIDAY:
+She shared good news — react casually, NOT with interview questions
+✓ "ninni gang 😭 valid toh hai"
+✓ "okay toh aaj free hai — interesting 👀"
+✓ "free day aur ninni plan, respect 💀"
+✗ NEVER: "plans kya hain actually" — interview energy
+✗ NEVER: "the dedication to sleeping is insane" — judging her
+✗ NEVER: try to sound impressive — natural > impressive always
+KEY: Short reactions work better than questions here
+
+GOOD MORNING: Acknowledge with light tease or curiosity
+✓ "ab toh reply karna padega na 😭"
+✓ "morning — kya plan hai aaj"
+✗ NEVER: "good morning sunshine!" — too eager
+
 NEVER:
 - Start any reply with "I"
 - Use: "that's impressive" / "power move" / "that's a win" / "wow" / "amazing"
@@ -92,6 +107,13 @@ NEVER:
 - rizz, no cap, fr fr, slay, bussin, sigma, aura
 - Banned emojis: 😉 🔥 😘 🌹 ❤️ 🌐 ✨
 - Paragraphs or over-explanation
+
+IMPRESS TRAP — CRITICAL:
+User says "impress hove" or "accha lge" = sound like a real person, NOT clever or witty.
+Real Gen Z impresses by being CASUAL and SHORT.
+"ninni gang 😭" > "the dedication to sleeping is insane"
+"okay toh free hai 👀" > "no classes means you have freedom"
+ALWAYS: shorter + unbothered > longer + clever.
 
 ALLOWED emojis ONLY: 😭 💀 🫠 👀 🫡
 
@@ -154,7 +176,15 @@ const SHOTS = [
   {role:"model",content:`{"best":"interesting timing 👀","replies":["interesting timing 👀","oh — hi","acha toh finally 😭","this is either nothing or something 💀","oh hey — kya hua suddenly","2 mahine baad hey — okay","bold 💀","oh hey — kya hua actually","interesting 👀"]}`},
 
   {role:"user",content:`SITUATION: crush | TONE: subtle flirty\nINPUT: crush ki funny story thi uspe react karna hai conversation start karni hai`},
-  {role:"model",content:`{"best":"okay context chahiye — full story bata","replies":["okay context chahiye — full story bata","this raised more questions than answers 💀","acha toh yeh wali side bhi hai tumhari 👀","okay ab curious ho gaya — backstory kya hai","yeh toh unexpected tha 😭","okay i need the full backstory for this","this deserves an explanation 😭","okay what actually happened here 💀","acha toh yeh chal raha hai 👀"]}`}
+  {role:"model",content:`{"best":"okay context chahiye — full story bata","replies":["okay context chahiye — full story bata","this raised more questions than answers 💀","acha toh yeh wali side bhi hai tumhari 👀","okay ab curious ho gaya — backstory kya hai","yeh toh unexpected tha 😭","okay i need the full backstory for this","this deserves an explanation 😭","okay what actually happened here 💀","acha toh yeh chal raha hai 👀"]}`},
+
+  // FREE TIME / NO CLASSES — casual, not interview, not try-hard
+  {role:"user",content:`SITUATION: just started talking | TONE: cute\nINPUT: ekk ladki ka msg aya ki aaj or kal no classes isliye more ninni toh kya reply kro jo best ho or impress hove or accha lge or like natural or accha se chalu reve samjhe`},
+  {role:"model",content:`{"best":"ninni gang 😭 valid toh hai","replies":["ninni gang 😭 valid toh hai","okay toh aaj free hai — interesting 👀","acha finally break — kya scene hai","free day aur ninni plan, respect 💀","no classes matlab actually free for once","acha toh chutti ka sahi use ho raha hai 😭","okay so basically unreachable aaj 👀","finally chutti — baat karein properly kabhi","toh aaj ka plan sirf sona hai ya kuch aur bhi"]}`},
+
+  // GOOD MORNING from crush
+  {role:"user",content:`SITUATION: crush | TONE: cute\nINPUT: crush ne good morning bheja kya reply du`},
+  {role:"model",content:`{"best":"ab toh reply karna padega na 😭","replies":["ab toh reply karna padega na 😭","oh hey — morning","acha toh aaj yaad aaya 😭","morning — kya plan hai aaj","okay good morning — what's today about","tum pehle kaise jaag gayi 😭","morning — rare moment","acha subah subah text 👀","good morning — kya scene hai"]}`}
 ];
 
 function clean(text) {
@@ -166,16 +196,19 @@ function clean(text) {
 }
 
 function parseResponse(raw) {
+  // Try JSON parse
   try {
     const cleaned = raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
     const start = cleaned.indexOf('{');
     const end = cleaned.lastIndexOf('}');
-    if (start === -1 || end === -1) throw new Error('No JSON');
-    const parsed = JSON.parse(cleaned.slice(start, end + 1));
-    const replies = Array.isArray(parsed.replies) ? parsed.replies.map(clean).filter(Boolean) : [];
-    const best = parsed.best ? clean(parsed.best) : replies[0] || "";
-    if (replies.length >= 3) return { best, replies: replies.slice(0, 9) };
+    if (start !== -1 && end !== -1) {
+      const parsed = JSON.parse(cleaned.slice(start, end + 1));
+      const replies = Array.isArray(parsed.replies) ? parsed.replies.map(clean).filter(Boolean) : [];
+      const best = parsed.best ? clean(parsed.best) : replies[0] || "";
+      if (replies.length >= 1) return { best, replies: replies.slice(0, 9) }; // accept even 1+ replies
+    }
   } catch (_) {}
+  // Fallback: newline split
   const lines = raw.split(/\r?\n/).map(clean).filter(Boolean);
   const unique = [], seen = new Set();
   for (const line of lines) {
@@ -274,7 +307,7 @@ module.exports = async function handler(req, res) {
 
     const { best, replies } = parseResponse(raw);
 
-    if (replies.length < 3) {
+    if (replies.length < 2) {
       return res.status(502).json({ error: "AI returned incomplete response. Please retry." });
     }
 
