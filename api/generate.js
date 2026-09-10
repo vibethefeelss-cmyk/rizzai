@@ -1,6 +1,6 @@
 // RizzAI — api/generate.js — Gemini Multi-Key + Retry
 
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-3.6-flash";
 
 // Multiple keys = multiple accounts = 3x rate limit
 // Vercel mein add karo: GEMINI_API_KEY_1, GEMINI_API_KEY_2, GEMINI_API_KEY_3
@@ -194,7 +194,6 @@ async function callGemini(apiKey, contents) {
         system_instruction: { parts: [{ text: SYSTEM }] },
         contents,
         generationConfig: {
-          temperature: 0.9,
           maxOutputTokens: 800,
           responseMimeType: "application/json"
         }
