@@ -1,6 +1,6 @@
 // RizzAI — api/generate.js — Gen Z Final Version
 
-const MODEL = "gemini-2.5-flash-preview-05-20";
+const MODEL = "gemini-3.6-flash";
 
 function getKeys(env) {
   const keys = [];
