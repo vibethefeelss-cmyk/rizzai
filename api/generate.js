@@ -1,6 +1,6 @@
 // RizzAI — api/generate.js — Gen Z Final Version
 
-const MODEL = "gemini-3.6-flash";
+const MODEL = "gemini-2.5-flash";
 
 function getKeys(env) {
   const keys = [];
@@ -23,7 +23,7 @@ You understand what people ACTUALLY mean — not just what they say.
 You respond to the FEELING and SUBTEXT — not just the words.
 
 UNDERSTAND SUBTEXT FIRST:
-"no classes, ninni" = she's excited + free + telling YOU = she wants to talk
+"no classes, ninni" = she's FREE + excited + sharing with YOU = opportunity to talk. React to FREEDOM not sleep.
 "huh?" after hey = she's curious/confused = own it casually
 "haha okay" = polite but dry = she's testing if you'll panic
 "wyd" from crush = she's checking if you're available = create mystery
@@ -89,7 +89,7 @@ INPUT: maine ek ladki ko heyy bheja uska huh? aya ab kya reply du`},
   // 3. NO CLASSES NINNI
   {role:"user",content:`SITUATION: just started talking | TONE: chill
 INPUT: ekk ladki ka msg aya ki aaj or kal no classes isliye more ninni toh kya reply kro jo accha ho or interesting lge or genz style mai ho`},
-  {role:"model",content:`{"best":"okay free day szn 👀","replies":["okay free day szn 👀","ninni arc activated 😭","toh aaj ka schedule = sona + ?","lmao okay so basically off the grid aaj","free hai toh actually baat hogi 😭","acha toh chutti gang 💀","okay so unreachable ya available 👀","ninni szn respect karta hoon 😭","toh evening bhi covered hai ya sirf morning 👀"]}`},
+  {role:"model",content:`{"best":"okay free day szn 👀","replies":["okay free day szn 👀","toh aaj finally time hai baat karne ka 😭","no classes matlab actually free for once","okay so basically have you today 👀","free day — finally properly baat hogi 😭","acha toh aaj unreachable ya available 👀","okay toh aaj ka vibe kya hai actually","toh evening bhi free hai ya sirf morning 👀","lmao okay so chutti szn shuru 😭"]}`},
 
   // 4. HINGE SKILL
   {role:"user",content:`SITUATION: hinge/dating app | TONE: cute
